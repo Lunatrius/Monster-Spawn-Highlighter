@@ -1,5 +1,6 @@
 package lunatrius.msh;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import net.minecraft.src.EntityWolf;
 import net.minecraft.src.EntityZombie;
 import net.minecraft.src.EnumCreatureType;
 import net.minecraftforge.common.Configuration;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class Settings {
 	private final static Settings instance = new Settings();
@@ -95,7 +97,17 @@ public class Settings {
 	private Settings() {
 		for (EntityLivingEntry entityLivingEntry : this.entityLiving) {
 			if (entityLivingEntry.entity instanceof EntitySlime) {
-				((EntitySlime) entityLivingEntry.entity).setSlimeSize(1);
+				// ((EntitySlime) entityLivingEntry.entity).setSlimeSize(1);
+				try {
+					Method method = ReflectionHelper.findMethod(EntitySlime.class, (EntitySlime) entityLivingEntry.entity, new String[] {
+							"a", "setSlimeSize"
+					}, new Class[] {
+						int.class
+					});
+					method.invoke(entityLivingEntry.entity, 1);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
