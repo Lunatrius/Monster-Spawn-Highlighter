@@ -176,8 +176,11 @@ public class MonsterSpawnHighlighter {
 			entityCreatureTypeMapping = new HashMap<String, EnumCreatureType>();
 
 			for (EnumCreatureType creatureType : EnumCreatureType.values()) {
-				for (SpawnListEntry entry : (List<SpawnListEntry>) biome.getSpawnableList(creatureType)) {
-					entityCreatureTypeMapping.put(entry.entityClass.getSimpleName(), creatureType);
+				List<SpawnListEntry> spawnableList = biome.getSpawnableList(creatureType);
+				if (spawnableList != null) {
+					for (SpawnListEntry entry : spawnableList) {
+						entityCreatureTypeMapping.put(entry.entityClass.getSimpleName(), creatureType);
+					}
 				}
 			}
 
