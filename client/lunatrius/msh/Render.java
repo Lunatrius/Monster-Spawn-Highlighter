@@ -2,6 +2,7 @@ package lunatrius.msh;
 
 import lunatrius.msh.util.Vector4i;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -63,7 +64,7 @@ public class Render {
 
 	@ForgeSubscribe
 	public void onRender(RenderWorldLastEvent event) {
-		if (this.minecraft != null && this.minecraft.currentScreen == null && this.settings.renderBlocks != 0) {
+		if (this.minecraft != null && this.settings.renderBlocks != 0) {
 			EntityPlayerSP player = this.minecraft.thePlayer;
 			if (player != null) {
 				this.settings.playerPosition.x = (float) (player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks);
@@ -89,8 +90,12 @@ public class Render {
 
 		GL11.glTranslatef(-this.settings.playerPosition.x, -this.settings.playerPosition.y, -this.settings.playerPosition.z);
 
+		Vector4i blockPos;
+		float delta;
+		int blockID;
+		Block block;
 		for (int i = 0; i < this.settings.spawnList.size(); i++) {
-			Vector4i blockPos = this.settings.spawnList.get(i);
+			blockPos = this.settings.spawnList.get(i);
 
 			switch (blockPos.w) {
 			case 1:
@@ -106,9 +111,19 @@ public class Render {
 				break;
 			}
 
-			GL11.glTranslatef(blockPos.x, blockPos.y, blockPos.z);
+			delta = 0.0f;
+			blockID = this.minecraft.theWorld.getBlockId(blockPos.x, blockPos.y, blockPos.z);
+			block = Block.blocksList[blockID];
+			if (block != null) {
+				if (block.blockID == Block.snow.blockID || block.blockID == Block.pressurePlatePlanks.blockID || block.blockID == Block.pressurePlateStone.blockID) {
+					block.setBlockBoundsBasedOnState(this.minecraft.theWorld, blockPos.x, blockPos.y, blockPos.z);
+					delta = (float) block.getBlockBoundsMaxY();
+				}
+			}
+
+			GL11.glTranslatef(blockPos.x, blockPos.y + delta, blockPos.z);
 			GL11.glCallList(this.list[this.settings.renderBlocks == 1 ? 0 : 1]);
-			GL11.glTranslatef(-blockPos.x, -blockPos.y, -blockPos.z);
+			GL11.glTranslatef(-blockPos.x, -(blockPos.y + delta), -blockPos.z);
 		}
 
 		GL11.glTranslatef(this.settings.playerPosition.x, this.settings.playerPosition.y, this.settings.playerPosition.z);

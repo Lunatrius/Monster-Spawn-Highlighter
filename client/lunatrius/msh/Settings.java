@@ -31,7 +31,7 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class Settings {
-	private final static Settings instance = new Settings();
+	private static final Settings instance = new Settings();
 
 	public Configuration config = null;
 
@@ -52,7 +52,7 @@ public class Settings {
 
 	public Vector3f playerPosition = new Vector3f();
 	public List<Vector4i> spawnList = new ArrayList<Vector4i>();
-	public Map<Integer, Map<String, EnumCreatureType>> biomeCreatureSpawnMapping = new HashMap<Integer, Map<String, EnumCreatureType>>();
+	public Map<Integer, Map<Class, EnumCreatureType>> biomeCreatureSpawnMapping = new HashMap<Integer, Map<Class, EnumCreatureType>>();
 
 	public EntityLivingEntry creeper = new EntityLivingEntry("Creeper", new EntityCreeper(null), true);
 	public EntityLivingEntry zombie = new EntityLivingEntry("Zombie", new EntityZombie(null), true);

@@ -12,7 +12,24 @@ import lunatrius.msh.util.Vector4i;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
+import net.minecraft.src.EntityBat;
+import net.minecraft.src.EntityChicken;
+import net.minecraft.src.EntityCow;
+import net.minecraft.src.EntityCreeper;
+import net.minecraft.src.EntityEnderman;
+import net.minecraft.src.EntityGhast;
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMagmaCube;
+import net.minecraft.src.EntityMooshroom;
+import net.minecraft.src.EntityOcelot;
+import net.minecraft.src.EntityPig;
+import net.minecraft.src.EntityPigZombie;
+import net.minecraft.src.EntitySkeleton;
+import net.minecraft.src.EntitySlime;
+import net.minecraft.src.EntitySpider;
+import net.minecraft.src.EntitySquid;
+import net.minecraft.src.EntityWolf;
+import net.minecraft.src.EntityZombie;
 import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.KeyBinding;
 import net.minecraft.src.SpawnListEntry;
@@ -120,8 +137,9 @@ public class MonsterSpawnHighlighter {
 		if (--this.ticks < 0) {
 			this.ticks = this.settings.updateRate;
 
-			this.settings.spawnList.clear();
-			if (this.minecraft != null && this.minecraft.currentScreen == null && this.settings.renderBlocks != 0) {
+			if (this.minecraft != null && this.minecraft.theWorld != null && this.settings.renderBlocks != 0) {
+				this.settings.spawnList.clear();
+
 				this.world = this.minecraft.theWorld;
 
 				int lowX, lowY, lowZ, highX, highY, highZ, x, y, z, type;
@@ -171,15 +189,15 @@ public class MonsterSpawnHighlighter {
 
 		BiomeGenBase biome = this.world.getBiomeGenForCoords(x, z);
 
-		Map<String, EnumCreatureType> entityCreatureTypeMapping = null;
+		Map<Class, EnumCreatureType> entityCreatureTypeMapping = null;
 		if (!this.settings.biomeCreatureSpawnMapping.containsKey(biome.biomeID)) {
-			entityCreatureTypeMapping = new HashMap<String, EnumCreatureType>();
+			entityCreatureTypeMapping = new HashMap<Class, EnumCreatureType>();
 
 			for (EnumCreatureType creatureType : EnumCreatureType.values()) {
 				List<SpawnListEntry> spawnableList = biome.getSpawnableList(creatureType);
 				if (spawnableList != null) {
 					for (SpawnListEntry entry : spawnableList) {
-						entityCreatureTypeMapping.put(entry.entityClass.getSimpleName(), creatureType);
+						entityCreatureTypeMapping.put(entry.entityClass, creatureType);
 					}
 				}
 			}
@@ -192,52 +210,52 @@ public class MonsterSpawnHighlighter {
 			return 0x00;
 		}
 
-		String key;
+		Class key;
 		EnumCreatureType value;
 		int spawnType = 0, i;
 		EntityLiving entity = null;
 
-		for (Entry<String, EnumCreatureType> entry : entityCreatureTypeMapping.entrySet()) {
+		for (Entry<Class, EnumCreatureType> entry : entityCreatureTypeMapping.entrySet()) {
 			key = entry.getKey();
 			value = entry.getValue();
 
 			for (i = 0; i < this.settings.entityLiving.length; i++) {
 				entity = this.settings.entityLiving[i].entity;
 
-				if (this.settings.entityLiving[i].enabled && key.equals(entity.getClass().getSimpleName())) {
-					if (!SpawnerAnimals.canCreatureTypeSpawnAtLocation(value, this.world, x, y, z) && !key.equals(this.settings.ozelot.nameObf)) {
+				if (this.settings.entityLiving[i].enabled && key.isInstance(entity)) {
+					if (!key.equals(EntityOcelot.class) && !SpawnerAnimals.canCreatureTypeSpawnAtLocation(value, this.world, x, y, z)) {
 						continue;
 					}
 
 					if (!this.world.isAnyLiquid(entity.boundingBox)) {
-						if (this.world.getCollidingBoundingBoxes(entity, entity.boundingBox).isEmpty()) {
-							if ((key.equals(this.settings.creeper.nameObf) || key.equals(this.settings.zombie.nameObf) || key.equals(this.settings.skeleton.nameObf) || key.equals(this.settings.spider.nameObf) || key.equals(this.settings.enderman.nameObf)) && getBlockLightLevel(x, y, z, 16) < 8) {
+						if (this.world.getAllCollidingBoundingBoxes(entity.boundingBox).isEmpty()) {
+							if ((key.equals(EntityCreeper.class) || key.equals(EntityZombie.class) || key.equals(EntitySkeleton.class) || key.equals(EntitySpider.class) || key.equals(EntityEnderman.class)) && getBlockLightLevel(x, y, z, 16) < 8) {
 								spawnType |= 0x02;
 							}
 
-							if (key.equals(this.settings.bat.nameObf) && entity.boundingBox.minY < 63 && getBlockLightLevel(x, y, z, 16) <= 7) {
+							if (key.equals(EntityBat.class) && entity.boundingBox.minY < 63 && getBlockLightLevel(x, y, z, 16) <= 7) {
 								spawnType |= 0x02;
 							}
 
-							if (key.equals(this.settings.slime.nameObf) && (isSlimeChunk(x >> 4, z >> 4) && y < 40 || biome.biomeID == BiomeGenBase.swampland.biomeID)) {
+							if (key.equals(EntitySlime.class) && (isSlimeChunk(x >> 4, z >> 4) && y < 40 || biome.biomeID == BiomeGenBase.swampland.biomeID)) {
 								return 0x03;
 							}
 
-							if (key.equals(this.settings.pigZombie.nameObf) || key.equals(this.settings.ghast.nameObf) || key.equals(this.settings.lavaSlime.nameObf)) {
+							if (key.equals(EntityPigZombie.class) || key.equals(EntityGhast.class) || key.equals(EntityMagmaCube.class)) {
 								return 0x03;
 							}
 
-							if ((key.equals(this.settings.chicken.nameObf) || key.equals(this.settings.cow.nameObf) || key.equals(this.settings.mushroomCow.nameObf) || key.equals(this.settings.pig.nameObf) || key.equals(this.settings.sheep.nameObf) || key.equals(this.settings.wolf.nameObf)) && blockID == Block.grass.blockID && getBlockLightLevel(x, y, z, 0) > 8) {
+							if ((key.equals(EntityChicken.class) || key.equals(EntityCow.class) || key.equals(EntityMooshroom.class) || key.equals(EntityPig.class) || key.equals(EntityPig.class) || key.equals(EntityWolf.class)) && blockID == Block.grass.blockID && getBlockLightLevel(x, y, z, 0) > 8) {
 								spawnType |= 0x01;
 							}
 
-							if (key.equals(this.settings.ozelot.nameObf) && y >= 64 && (blockID == Block.grass.blockID || blockID == Block.leaves.blockID)) {
+							if (key.equals(EntityOcelot.class) && y >= 64 && (blockID == Block.grass.blockID || blockID == Block.leaves.blockID)) {
 								return 0x03;
 							}
 						}
 					}
 
-					if (key.equals(this.settings.squid.nameObf) && y > 45 && y < 63) {
+					if (key.equals(EntitySquid.class) && y > 45 && y < 63) {
 						return 0x03;
 					}
 				}
