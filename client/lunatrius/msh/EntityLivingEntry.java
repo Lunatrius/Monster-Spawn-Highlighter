@@ -1,6 +1,6 @@
 package lunatrius.msh;
 
-import net.minecraft.src.EntityLiving;
+import net.minecraft.entity.EntityLiving;
 
 public class EntityLivingEntry {
 	public String name = "";

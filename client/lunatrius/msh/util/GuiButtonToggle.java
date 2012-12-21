@@ -1,7 +1,7 @@
 package lunatrius.msh.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiButton;
+import net.minecraft.client.gui.GuiButton;
 
 public class GuiButtonToggle extends GuiButton {
 	public GuiButtonToggle(int var1, int var2, int var3, int var4, int var5, String var6) {

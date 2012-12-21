@@ -2,9 +2,9 @@ package lunatrius.msh;
 
 import lunatrius.msh.util.Config;
 import lunatrius.msh.util.GuiButtonToggle;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.StringTranslate;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.StringTranslate;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 

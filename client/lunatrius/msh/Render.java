@@ -1,9 +1,9 @@
 package lunatrius.msh;
 
 import lunatrius.msh.util.Vector4i;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
-import net.minecraft.src.EntityPlayerSP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
