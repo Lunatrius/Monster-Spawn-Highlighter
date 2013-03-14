@@ -31,15 +31,15 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 
 		for (int i = 0; i < this.btnToggleMonsters.length; i++) {
 			this.btnToggleMonsters[i] = new GuiButtonToggle(id++, baseX + (i % 3) * 95, baseY + (i / 3) * 25, 90, 20, this.strTranslate.translateKey("entity." + this.settings.entityLiving[i].name + ".name"));
-			this.controlList.add(this.btnToggleMonsters[i]);
+			this.buttonList.add(this.btnToggleMonsters[i]);
 			this.btnToggleMonsters[i].enabled = this.settings.entityLiving[i].enabled;
 		}
 
 		this.btnEnabled = new GuiButton(id++, baseX, baseY + (this.btnToggleMonsters.length / 3) * 25 + 10, 90, 20, this.settings.renderBlocks == 0 ? "Disabled" : (this.settings.renderBlocks == 1 ? "Squares" : "Guides"));
-		this.controlList.add(this.btnEnabled);
+		this.buttonList.add(this.btnEnabled);
 
 		this.btnDone = new GuiButton(id++, baseX + 190, baseY + (this.btnToggleMonsters.length / 3) * 25 + 10, 90, 20, "Done");
-		this.controlList.add(this.btnDone);
+		this.buttonList.add(this.btnDone);
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 				this.settings.entityLiving[i].enabled = !this.settings.entityLiving[i].enabled;
 				this.btnToggleMonsters[i].enabled = this.settings.entityLiving[i].enabled;
 
-				Property prop = Config.get(this.settings.config, "enabled" + this.settings.entityLiving[i].name, Configuration.CATEGORY_GENERAL, false, "Enable spawn rendering of " + this.settings.entityLiving[i].name + ".");
-				prop.value = Boolean.toString(this.settings.entityLiving[i].enabled);
+				Property prop = Config.get(this.settings.config, Configuration.CATEGORY_GENERAL, "enabled" + this.settings.entityLiving[i].name, false, "Enable spawn rendering of " + this.settings.entityLiving[i].name + ".");
+				prop.set(this.settings.entityLiving[i].enabled);
 			}
 		}
 
@@ -65,7 +65,7 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 
 	@Override
 	public void drawScreen(int var1, int var2, float var3) {
-		this.drawDefaultBackground();
+		drawDefaultBackground();
 
 		super.drawScreen(var1, var2, var3);
 	}

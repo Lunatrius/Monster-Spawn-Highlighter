@@ -72,20 +72,20 @@ public class MonsterSpawnHighlighter {
 		Configuration config = this.settings.config = new Configuration(event.getSuggestedConfigurationFile());
 
 		config.load();
-		this.settings.colorDayRed = Config.getInt(config, "colorDayRed", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorDayRed * 255), 0, 255, "Amount of red color (during the day).") / 255.0f;
-		this.settings.colorDayGreen = Config.getInt(config, "colorDayGreen", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorDayGreen * 255), 0, 255, "Amount of green color (during the day).") / 255.0f;
-		this.settings.colorDayBlue = Config.getInt(config, "colorDayBlue", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorDayBlue * 255), 0, 255, "Amount of blue color (during the day).") / 255.0f;
-		this.settings.colorNightRed = Config.getInt(config, "colorNightRed", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorNightRed * 255), 0, 255, "Amount of red color (during the night).") / 255.0f;
-		this.settings.colorNightGreen = Config.getInt(config, "colorNightGreen", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorNightGreen * 255), 0, 255, "Amount of green color (during the night).") / 255.0f;
-		this.settings.colorNightBlue = Config.getInt(config, "colorNightBlue", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorNightBlue * 255), 0, 255, "Amount of blue color (during the night).") / 255.0f;
-		this.settings.colorBothRed = Config.getInt(config, "colorBothRed", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorBothRed * 255), 0, 255, "Amount of red color (during the night).") / 255.0f;
-		this.settings.colorBothGreen = Config.getInt(config, "colorBothGreen", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorBothGreen * 255), 0, 255, "Amount of green color (during the night).") / 255.0f;
-		this.settings.colorBothBlue = Config.getInt(config, "colorBothBlue", Configuration.CATEGORY_GENERAL, (int) (this.settings.colorBothBlue * 255), 0, 255, "Amount of blue color (during the night).") / 255.0f;
-		this.settings.renderRange = Config.getInt(config, "renderRange", Configuration.CATEGORY_GENERAL, this.settings.renderRange, 1, 50, "Amount of blocks that should be checked in each direction ([2*range+1]^3 total)");
-		this.settings.updateRate = Config.getInt(config, "updateRate", Configuration.CATEGORY_GENERAL, this.settings.updateRate, 1, 30, "Amount of ticks to wait before refreshing again.");
-		this.settings.guideLength = Config.getFloat(config, "guideLength", Configuration.CATEGORY_GENERAL, this.settings.guideLength, -50.0f, 50.0f, "Length of the guide line (negative numbers invert the guide line).");
+		this.settings.colorDayRed = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorDayRed", (int) (this.settings.colorDayRed * 255), 0, 255, "Amount of red color (during the day).") / 255.0f;
+		this.settings.colorDayGreen = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorDayGreen", (int) (this.settings.colorDayGreen * 255), 0, 255, "Amount of green color (during the day).") / 255.0f;
+		this.settings.colorDayBlue = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorDayBlue", (int) (this.settings.colorDayBlue * 255), 0, 255, "Amount of blue color (during the day).") / 255.0f;
+		this.settings.colorNightRed = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorNightRed", (int) (this.settings.colorNightRed * 255), 0, 255, "Amount of red color (during the night).") / 255.0f;
+		this.settings.colorNightGreen = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorNightGreen", (int) (this.settings.colorNightGreen * 255), 0, 255, "Amount of green color (during the night).") / 255.0f;
+		this.settings.colorNightBlue = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorNightBlue", (int) (this.settings.colorNightBlue * 255), 0, 255, "Amount of blue color (during the night).") / 255.0f;
+		this.settings.colorBothRed = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothRed", (int) (this.settings.colorBothRed * 255), 0, 255, "Amount of red color (during the night).") / 255.0f;
+		this.settings.colorBothGreen = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothGreen", (int) (this.settings.colorBothGreen * 255), 0, 255, "Amount of green color (during the night).") / 255.0f;
+		this.settings.colorBothBlue = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothBlue", (int) (this.settings.colorBothBlue * 255), 0, 255, "Amount of blue color (during the night).") / 255.0f;
+		this.settings.renderRange = Config.getInt(config, Configuration.CATEGORY_GENERAL, "renderRange", this.settings.renderRange, 1, 50, "Amount of blocks that should be checked in each direction ([2*range+1]^3 total)");
+		this.settings.updateRate = Config.getInt(config, Configuration.CATEGORY_GENERAL, "updateRate", this.settings.updateRate, 1, 30, "Amount of ticks to wait before refreshing again.");
+		this.settings.guideLength = (float) Config.getDouble(config, Configuration.CATEGORY_GENERAL, "guideLength", this.settings.guideLength, -50.0f, 50.0f, "Length of the guide line (negative numbers invert the guide line).");
 		for (int i = 0; i < this.settings.entityLiving.length; i++) {
-			this.settings.entityLiving[i].enabled = Config.getBoolean(config, "enabled" + this.settings.entityLiving[i].name, Configuration.CATEGORY_GENERAL, this.settings.entityLiving[i].enabled, "Enable spawn rendering of " + this.settings.entityLiving[i].name + ".");
+			this.settings.entityLiving[i].enabled = Config.getBoolean(config, Configuration.CATEGORY_GENERAL, "enabled" + this.settings.entityLiving[i].name, this.settings.entityLiving[i].enabled, "Enable spawn rendering of " + this.settings.entityLiving[i].name + ".");
 		}
 		config.save();
 	}
