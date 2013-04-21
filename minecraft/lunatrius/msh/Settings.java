@@ -1,34 +1,18 @@
 package lunatrius.msh;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import lunatrius.msh.util.Vector3f;
+import lunatrius.msh.util.Vector4i;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.*;
+import net.minecraftforge.common.Configuration;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import lunatrius.msh.util.Vector3f;
-import lunatrius.msh.util.Vector4i;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntityMagmaCube;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraftforge.common.Configuration;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class Settings {
 	private static final Settings instance = new Settings();
@@ -100,10 +84,10 @@ public class Settings {
 				// ((EntitySlime) entityLivingEntry.entity).setSlimeSize(1);
 				try {
 					Method method = ReflectionHelper.findMethod(EntitySlime.class, (EntitySlime) entityLivingEntry.entity, new String[] {
-							"a", "setSlimeSize"
-					}, new Class[] {
-						int.class
-					});
+							"func_70799_a",
+							"a",
+							"setSlimeSize"
+					}, new Class[] {int.class});
 					method.invoke(entityLivingEntry.entity, 1);
 				} catch (Exception e) {
 					e.printStackTrace();

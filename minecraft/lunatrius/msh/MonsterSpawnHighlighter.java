@@ -1,52 +1,8 @@
 package lunatrius.msh;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-
-import lunatrius.msh.util.Config;
-import lunatrius.msh.util.Vector4i;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntityMagmaCube;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.world.SpawnerAnimals;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.SpawnListEntry;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.input.Keyboard;
-
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarting;
-import cpw.mods.fml.common.Mod.ServerStopping;
+import cpw.mods.fml.common.Mod.*;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -55,6 +11,25 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import lunatrius.msh.util.Config;
+import lunatrius.msh.util.Vector4i;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.*;
+import net.minecraft.world.SpawnerAnimals;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.SpawnListEntry;
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.input.Keyboard;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 @Mod(modid = "MonsterSpawnHighlighter")
 public class MonsterSpawnHighlighter {
@@ -95,10 +70,8 @@ public class MonsterSpawnHighlighter {
 		try {
 			MinecraftForge.EVENT_BUS.register(new Render(this.minecraft));
 
-			KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler(new KeyBinding[] {
-				this.toggleKey
-			}, new boolean[] {
-				false
+			KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler(new KeyBinding[] {this.toggleKey}, new boolean[] {
+					false
 			}));
 
 			LanguageRegistry.instance().addStringLocalization("msh.toggle", "Toggle Monster Spawns");
@@ -156,7 +129,6 @@ public class MonsterSpawnHighlighter {
 						for (z = lowZ; z <= highZ; z++) {
 							setEntityLivingLocation(x, y, z);
 
-							type = 0;
 							if ((type = getCanSpawnHere(x, y, z)) > 0) {
 								this.settings.spawnList.add(new Vector4i(x, y, z, type));
 							}
@@ -228,7 +200,7 @@ public class MonsterSpawnHighlighter {
 					}
 
 					if (!this.world.isAnyLiquid(entity.boundingBox)) {
-						if (this.world.getAllCollidingBoundingBoxes(entity.boundingBox).isEmpty()) {
+						if (this.world.getCollidingBlockBounds(entity.boundingBox).isEmpty()) {
 							if ((key.equals(EntityCreeper.class) || key.equals(EntityZombie.class) || key.equals(EntitySkeleton.class) || key.equals(EntitySpider.class) || key.equals(EntityEnderman.class)) && getBlockLightLevel(x, y, z, 16) < 8) {
 								spawnType |= 0x02;
 							}
@@ -270,6 +242,6 @@ public class MonsterSpawnHighlighter {
 	}
 
 	private boolean isSlimeChunk(int x, int z) {
-		return this.settings.seed != 0 ? (new Random(this.settings.seed + x * x * 4987142 + x * 5947611 + z * z * 4392871L + z * 389711 ^ 987234911)).nextInt(10) == 0 : false;
+		return (this.settings.seed != 0) && ((new Random(this.settings.seed + x * x * 4987142 + x * 5947611 + z * z * 4392871L + z * 389711 ^ 987234911)).nextInt(10) == 0);
 	}
 }
