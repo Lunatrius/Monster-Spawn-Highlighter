@@ -84,9 +84,7 @@ public class Settings {
 				// ((EntitySlime) entityLivingEntry.entity).setSlimeSize(1);
 				try {
 					Method method = ReflectionHelper.findMethod(EntitySlime.class, (EntitySlime) entityLivingEntry.entity, new String[] {
-							"func_70799_a",
-							"a",
-							"setSlimeSize"
+							"func_70799_a", "a", "setSlimeSize"
 					}, new Class[] {int.class});
 					method.invoke(entityLivingEntry.entity, 1);
 				} catch (Exception e) {
