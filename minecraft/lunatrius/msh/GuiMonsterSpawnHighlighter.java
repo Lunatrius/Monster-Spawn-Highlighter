@@ -4,13 +4,12 @@ import lunatrius.msh.util.Config;
 import lunatrius.msh.util.GuiButtonToggle;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.StringTranslate;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
 public class GuiMonsterSpawnHighlighter extends GuiScreen {
 	private final Settings settings = Settings.instance();
-	private final StringTranslate strTranslate = StringTranslate.getInstance();
 
 	private final GuiButtonToggle[] btnToggleMonsters = new GuiButtonToggle[this.settings.entityLiving.length];
 
@@ -30,7 +29,7 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 		int baseY = this.height / 2 - (int) Math.ceil(this.btnToggleMonsters.length / 3.0 + 1) * 25 / 2 - 5;
 
 		for (int i = 0; i < this.btnToggleMonsters.length; i++) {
-			this.btnToggleMonsters[i] = new GuiButtonToggle(id++, baseX + (i % 3) * 95, baseY + (i / 3) * 25, 90, 20, this.strTranslate.translateKey("entity." + this.settings.entityLiving[i].name + ".name"));
+			this.btnToggleMonsters[i] = new GuiButtonToggle(id++, baseX + (i % 3) * 95, baseY + (i / 3) * 25, 90, 20, StatCollector.translateToLocal("entity." + this.settings.entityLiving[i].name + ".name"));
 			this.buttonList.add(this.btnToggleMonsters[i]);
 			this.btnToggleMonsters[i].enabled = this.settings.entityLiving[i].enabled;
 		}
