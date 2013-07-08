@@ -2,7 +2,8 @@ package lunatrius.msh;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.*;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -42,7 +43,7 @@ public class MonsterSpawnHighlighter {
 	@Instance("MonsterSpawnHighlighter")
 	public static MonsterSpawnHighlighter instance;
 
-	@PreInit
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		Configuration config = this.settings.config = new Configuration(event.getSuggestedConfigurationFile());
 
@@ -65,12 +66,12 @@ public class MonsterSpawnHighlighter {
 		config.save();
 	}
 
-	@Init
+	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		try {
 			MinecraftForge.EVENT_BUS.register(new Render(this.minecraft));
 
-			KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler(new KeyBinding[] {this.toggleKey}, new boolean[] {
+			KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler(new KeyBinding[] { this.toggleKey }, new boolean[] {
 					false
 			}));
 
@@ -82,7 +83,7 @@ public class MonsterSpawnHighlighter {
 		}
 	}
 
-	@ServerStarting
+	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
 		try {
 			this.settings.seed = event.getServer().worldServers[0].getSeed();
@@ -91,7 +92,7 @@ public class MonsterSpawnHighlighter {
 		}
 	}
 
-	@ServerStopping
+	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
 		this.settings.seed = 0;
 	}
