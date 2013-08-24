@@ -16,11 +16,13 @@ import lunatrius.msh.util.Config;
 import lunatrius.msh.util.Vector4i;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -38,6 +40,8 @@ public class MonsterSpawnHighlighter {
 	private World world = null;
 	private final KeyBinding toggleKey = new KeyBinding("msh.toggle", Keyboard.KEY_L);
 	private final Settings settings = Settings.instance();
+	private final Frustrum frustrum = new Frustrum();
+	private final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 	private int ticks = -1;
 
 	@Instance("MonsterSpawnHighlighter")
@@ -114,6 +118,8 @@ public class MonsterSpawnHighlighter {
 			if (this.minecraft != null && this.minecraft.theWorld != null && this.settings.renderBlocks != 0) {
 				this.settings.spawnList.clear();
 
+				this.frustrum.setPosition(this.settings.playerPosition.x, this.settings.playerPosition.y, this.settings.playerPosition.z);
+
 				this.world = this.minecraft.theWorld;
 
 				int lowX, lowY, lowZ, highX, highY, highZ, x, y, z, type;
@@ -128,6 +134,10 @@ public class MonsterSpawnHighlighter {
 				for (y = lowY; y <= highY; y++) {
 					for (x = lowX; x <= highX; x++) {
 						for (z = lowZ; z <= highZ; z++) {
+							if (!this.frustrum.isBoundingBoxInFrustum(this.boundingBox.setBounds(x, y, z, x + 1, y + 1, z + 1))) {
+								continue;
+							}
+
 							setEntityLivingLocation(x, y, z);
 
 							if ((type = getCanSpawnHere(x, y, z)) > 0) {
