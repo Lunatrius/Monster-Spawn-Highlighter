@@ -61,7 +61,9 @@ public class MonsterSpawnHighlighter {
 		this.settings.colorBothRed = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothRed", (int) (this.settings.colorBothRed * 255), 0, 255, "Amount of red color (during the night).") / 255.0f;
 		this.settings.colorBothGreen = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothGreen", (int) (this.settings.colorBothGreen * 255), 0, 255, "Amount of green color (during the night).") / 255.0f;
 		this.settings.colorBothBlue = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothBlue", (int) (this.settings.colorBothBlue * 255), 0, 255, "Amount of blue color (during the night).") / 255.0f;
-		this.settings.renderRange = Config.getInt(config, Configuration.CATEGORY_GENERAL, "renderRange", this.settings.renderRange, 1, 50, "Amount of blocks that should be checked in each direction ([2*range+1]^3 total)");
+		this.settings.renderRangeXZ = Config.getInt(config, Configuration.CATEGORY_GENERAL, "renderRangeXZ", this.settings.renderRangeXZ, 1, 32, "Amount of blocks that should be checked in X and Z directions ([2*range+1]^2 total).");
+		this.settings.renderRangeYBellow = Config.getInt(config, Configuration.CATEGORY_GENERAL, "renderRangeYBellow", this.settings.renderRangeYBellow, 1, 32, "Amount of blocks that should be checked bellow the player.");
+		this.settings.renderRangeYAbove = Config.getInt(config, Configuration.CATEGORY_GENERAL, "renderRangeYAbove", this.settings.renderRangeYAbove, 1, 32, "Amount of blocks that should be checked above the player.");
 		this.settings.updateRate = Config.getInt(config, Configuration.CATEGORY_GENERAL, "updateRate", this.settings.updateRate, 1, 30, "Amount of ticks to wait before refreshing again.");
 		this.settings.guideLength = (float) Config.getDouble(config, Configuration.CATEGORY_GENERAL, "guideLength", this.settings.guideLength, -50.0f, 50.0f, "Length of the guide line (negative numbers invert the guide line).");
 		for (int i = 0; i < this.settings.entityLiving.length; i++) {
@@ -124,12 +126,12 @@ public class MonsterSpawnHighlighter {
 
 				int lowX, lowY, lowZ, highX, highY, highZ, x, y, z, type;
 
-				lowX = (int) (Math.floor(this.settings.playerPosition.x) - this.settings.renderRange);
-				highX = (int) (Math.floor(this.settings.playerPosition.x) + this.settings.renderRange);
-				lowY = (int) (Math.floor(this.settings.playerPosition.y) - this.settings.renderRange);
-				highY = (int) (Math.floor(this.settings.playerPosition.y) + this.settings.renderRange);
-				lowZ = (int) (Math.floor(this.settings.playerPosition.z) - this.settings.renderRange);
-				highZ = (int) (Math.floor(this.settings.playerPosition.z) + this.settings.renderRange);
+				lowX = (int) (Math.floor(this.settings.playerPosition.x) - this.settings.renderRangeXZ);
+				highX = (int) (Math.floor(this.settings.playerPosition.x) + this.settings.renderRangeXZ);
+				lowY = (int) (Math.floor(this.settings.playerPosition.y) - this.settings.renderRangeYBellow);
+				highY = (int) (Math.floor(this.settings.playerPosition.y) + this.settings.renderRangeYAbove);
+				lowZ = (int) (Math.floor(this.settings.playerPosition.z) - this.settings.renderRangeXZ);
+				highZ = (int) (Math.floor(this.settings.playerPosition.z) + this.settings.renderRangeXZ);
 
 				for (y = lowY; y <= highY; y++) {
 					for (x = lowX; x <= highX; x++) {

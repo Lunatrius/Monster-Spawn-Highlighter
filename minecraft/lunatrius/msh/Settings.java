@@ -28,7 +28,9 @@ public class Settings {
 	public float colorBothRed = 1.0f;
 	public float colorBothGreen = 0.0f;
 	public float colorBothBlue = 0.0f;
-	public int renderRange = 8;
+	public int renderRangeXZ = 8;
+	public int renderRangeYBellow = 4;
+	public int renderRangeYAbove = 0;
 	public int updateRate = 4;
 	public float guideLength = 1.5f;
 	public int renderBlocks = 0;
@@ -85,7 +87,7 @@ public class Settings {
 				try {
 					Method method = ReflectionHelper.findMethod(EntitySlime.class, (EntitySlime) entityLivingEntry.entity, new String[] {
 							"func_70799_a", "a", "setSlimeSize"
-					}, new Class[] {int.class});
+					}, new Class[] { int.class });
 					method.invoke(entityLivingEntry.entity, 1);
 				} catch (Exception e) {
 					e.printStackTrace();
