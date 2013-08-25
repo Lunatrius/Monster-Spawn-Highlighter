@@ -212,36 +212,37 @@ public class MonsterSpawnHighlighter {
 						continue;
 					}
 
-					if (!this.world.isAnyLiquid(entity.boundingBox)) {
-						if (this.world.getCollidingBlockBounds(entity.boundingBox).isEmpty()) {
-							if ((key.equals(EntityCreeper.class) || key.equals(EntityZombie.class) || key.equals(EntitySkeleton.class) || key.equals(EntitySpider.class) || key.equals(EntityEnderman.class)) && getBlockLightLevel(x, y, z, 16) < 8) {
-								spawnType |= 0x02;
-							}
-
-							if (key.equals(EntityBat.class) && entity.boundingBox.minY < 63 && getBlockLightLevel(x, y, z, 16) <= 7) {
-								spawnType |= 0x02;
-							}
-
-							if (key.equals(EntitySlime.class) && (isSlimeChunk(x >> 4, z >> 4) && y < 40 || biome.biomeID == BiomeGenBase.swampland.biomeID)) {
-								return 0x03;
-							}
-
-							if (key.equals(EntityPigZombie.class) || key.equals(EntityGhast.class) || key.equals(EntityMagmaCube.class)) {
-								return 0x03;
-							}
-
-							if ((key.equals(EntityChicken.class) || key.equals(EntityCow.class) || key.equals(EntityMooshroom.class) || key.equals(EntityPig.class) || key.equals(EntityPig.class) || key.equals(EntityWolf.class)) && blockID == Block.grass.blockID && getBlockLightLevel(x, y, z, 0) > 8) {
-								spawnType |= 0x01;
-							}
-
-							if (key.equals(EntityOcelot.class) && y >= 64 && (blockID == Block.grass.blockID || blockID == Block.leaves.blockID)) {
-								return 0x03;
-							}
-						}
-					}
-
 					if (key.equals(EntitySquid.class) && y > 45 && y < 63) {
 						return 0x03;
+					}
+
+					if (!this.world.isAnyLiquid(entity.boundingBox)) {
+						if (this.world.getCollidingBlockBounds(entity.boundingBox).isEmpty()) {
+							if (key.equals(EntitySlime.class) && (y < 40 && isSlimeChunk(x >> 4, z >> 4) || y > 50 && y < 70 && biome.biomeID == BiomeGenBase.swampland.biomeID && getBlockLightLevel(x, y, z, 16) < 8)) {
+								return 0x03;
+							}
+
+							if ((key.equals(EntityPigZombie.class) || key.equals(EntityGhast.class) || key.equals(EntityMagmaCube.class)) && this.world.difficultySetting > 0) {
+								return 0x03;
+							}
+
+							if (key.equals(EntityOcelot.class) && y >= 64 && (blockID == Block.grass.blockID || block.isLeaves(this.world, x, y - 1, z))) {
+								return 0x03;
+							}
+
+							if ((key.equals(EntityCreeper.class) || key.equals(EntityZombie.class) || key.equals(EntitySkeleton.class) || key.equals(EntitySpider.class) || key.equals(EntityEnderman.class)) && getBlockLightLevel(x, y, z, 16) < 8 && this.world.difficultySetting > 0) {
+								spawnType |= 0x02;
+							}
+
+							Calendar calendar = this.world.getCurrentDate();
+							if (key.equals(EntityBat.class) && entity.boundingBox.minY < 63 && getBlockLightLevel(x, y, z, 16) < ((calendar.get(Calendar.MONTH) + 1 != 10 || calendar.get(Calendar.DATE) < 20) && (calendar.get(Calendar.MONTH) + 1 != 11 || calendar.get(Calendar.DATE) > 3) ? 5 : 8)) {
+								spawnType |= 0x02;
+							}
+
+							if ((key.equals(EntityChicken.class) || key.equals(EntityCow.class) || key.equals(EntityMooshroom.class) || key.equals(EntityPig.class) || key.equals(EntityWolf.class)) && blockID == Block.grass.blockID && getBlockLightLevel(x, y, z, 0) > 8) {
+								spawnType |= 0x01;
+							}
+						}
 					}
 				}
 			}
