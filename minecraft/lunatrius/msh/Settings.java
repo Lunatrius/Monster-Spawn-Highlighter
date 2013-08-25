@@ -1,12 +1,12 @@
 package lunatrius.msh;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import lunatrius.msh.util.Vector3f;
-import lunatrius.msh.util.Vector4i;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraftforge.common.Configuration;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class Settings {
 	public long seed = 0;
 
 	public Vector3f playerPosition = new Vector3f();
-	public List<Vector4i> spawnList = new ArrayList<Vector4i>();
+	public List<Vector4f> spawnList = new ArrayList<Vector4f>();
 	public Map<Integer, Map<Class, EnumCreatureType>> biomeCreatureSpawnMapping = new HashMap<Integer, Map<Class, EnumCreatureType>>();
 
 	public EntityLivingEntry creeper = new EntityLivingEntry("Creeper", new EntityCreeper(null), true);

@@ -13,7 +13,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import lunatrius.msh.util.Config;
-import lunatrius.msh.util.Vector4i;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustrum;
@@ -30,6 +29,7 @@ import net.minecraft.world.biome.SpawnListEntry;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -143,7 +143,7 @@ public class MonsterSpawnHighlighter {
 							setEntityLivingLocation(x, y, z);
 
 							if ((type = getCanSpawnHere(x, y, z)) > 0) {
-								this.settings.spawnList.add(new Vector4i(x, y, z, type));
+								this.settings.spawnList.add(new Vector4f(x, y, z, type));
 							}
 						}
 					}

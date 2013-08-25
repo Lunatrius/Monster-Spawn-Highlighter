@@ -1,12 +1,12 @@
 package lunatrius.msh;
 
-import lunatrius.msh.util.Vector4i;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector4f;
 
 public class Render {
 	private Minecraft minecraft = null;
@@ -89,14 +89,14 @@ public class Render {
 
 		GL11.glTranslatef(-this.settings.playerPosition.x, -this.settings.playerPosition.y, -this.settings.playerPosition.z);
 
-		Vector4i blockPos;
+		Vector4f blockPos;
 		float delta;
 		int blockID;
 		Block block;
 		for (int i = 0; i < this.settings.spawnList.size(); i++) {
 			blockPos = this.settings.spawnList.get(i);
 
-			switch (blockPos.w) {
+			switch ((int) blockPos.w) {
 			case 1:
 				GL11.glColor4f(this.settings.colorDayRed, this.settings.colorDayGreen, this.settings.colorDayBlue, 0.3f);
 				break;
@@ -111,11 +111,11 @@ public class Render {
 			}
 
 			delta = 0.0f;
-			blockID = this.minecraft.theWorld.getBlockId(blockPos.x, blockPos.y, blockPos.z);
+			blockID = this.minecraft.theWorld.getBlockId((int) blockPos.x, (int) blockPos.y, (int) blockPos.z);
 			block = Block.blocksList[blockID];
 			if (block != null) {
 				if (block.blockID == Block.snow.blockID || block.blockID == Block.pressurePlatePlanks.blockID || block.blockID == Block.pressurePlateStone.blockID) {
-					block.setBlockBoundsBasedOnState(this.minecraft.theWorld, blockPos.x, blockPos.y, blockPos.z);
+					block.setBlockBoundsBasedOnState(this.minecraft.theWorld, (int) blockPos.x, (int) blockPos.y, (int) blockPos.z);
 					delta = (float) block.getBlockBoundsMaxY();
 				}
 			}
