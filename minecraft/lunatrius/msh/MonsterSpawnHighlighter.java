@@ -6,7 +6,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -89,8 +88,6 @@ public class MonsterSpawnHighlighter {
 			KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler(new KeyBinding[] { this.toggleKey }, new boolean[] {
 					false
 			}));
-
-			LanguageRegistry.instance().addStringLocalization("msh.toggle", "Toggle Monster Spawns");
 
 			TickRegistry.registerTickHandler(new Ticker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
 		} catch (Exception ex) {
