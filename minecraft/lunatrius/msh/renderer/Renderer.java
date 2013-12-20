@@ -1,5 +1,6 @@
-package lunatrius.msh;
+package lunatrius.msh.renderer;
 
+import lunatrius.msh.MonsterSpawnHighlighter;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -8,14 +9,14 @@ import net.minecraftforge.event.ForgeSubscribe;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
-public class Render {
+public class Renderer {
+	private MonsterSpawnHighlighter msh = MonsterSpawnHighlighter.instance;
 	private Minecraft minecraft = null;
-	private final Settings settings = Settings.instance();
 	private final int[] list = new int[] {
 			-1, -1
 	};
 
-	public Render(Minecraft minecraft) {
+	public Renderer(Minecraft minecraft) {
 		this.minecraft = minecraft;
 		compileList();
 	}
@@ -56,19 +57,19 @@ public class Render {
 
 		GL11.glBegin(GL11.GL_LINES);
 		GL11.glVertex3f(0.5f, 0.0f, 0.5f);
-		GL11.glVertex3f(0.5f, this.settings.guideLength, 0.5f);
+		GL11.glVertex3f(0.5f, this.msh.config.guideLength, 0.5f);
 		GL11.glEnd();
 		GL11.glEndList();
 	}
 
 	@ForgeSubscribe
 	public void onRender(RenderWorldLastEvent event) {
-		if (this.minecraft != null && this.settings.renderBlocks != 0) {
+		if (this.minecraft != null && this.msh.config.renderSpawns != 0) {
 			EntityPlayerSP player = this.minecraft.thePlayer;
 			if (player != null) {
-				this.settings.playerPosition.x = (float) (player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks);
-				this.settings.playerPosition.y = (float) (player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks);
-				this.settings.playerPosition.z = (float) (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks);
+				this.msh.playerPosition.x = (float) (player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks);
+				this.msh.playerPosition.y = (float) (player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks);
+				this.msh.playerPosition.z = (float) (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks);
 
 				render();
 			}
@@ -87,26 +88,26 @@ public class Render {
 
 		GL11.glLineWidth(2.0f);
 
-		GL11.glTranslatef(-this.settings.playerPosition.x, -this.settings.playerPosition.y, -this.settings.playerPosition.z);
+		GL11.glTranslatef(-this.msh.playerPosition.x, -this.msh.playerPosition.y, -this.msh.playerPosition.z);
 
 		Vector4f blockPos;
 		float delta;
 		int blockID;
 		Block block;
-		for (int i = 0; i < this.settings.spawnList.size(); i++) {
-			blockPos = this.settings.spawnList.get(i);
+		for (int i = 0; i < this.msh.spawnList.size(); i++) {
+			blockPos = this.msh.spawnList.get(i);
 
 			switch ((int) blockPos.w) {
 			case 1:
-				GL11.glColor4f(this.settings.colorDayRed, this.settings.colorDayGreen, this.settings.colorDayBlue, 0.3f);
+				this.msh.config.glColorDay();
 				break;
 
 			case 2:
-				GL11.glColor4f(this.settings.colorNightRed, this.settings.colorNightGreen, this.settings.colorNightBlue, 0.3f);
+				this.msh.config.glColorNight();
 				break;
 
 			case 3:
-				GL11.glColor4f(this.settings.colorBothRed, this.settings.colorBothGreen, this.settings.colorBothBlue, 0.3f);
+				this.msh.config.glColorBoth();
 				break;
 			}
 
@@ -121,11 +122,11 @@ public class Render {
 			}
 
 			GL11.glTranslatef(blockPos.x, blockPos.y + delta, blockPos.z);
-			GL11.glCallList(this.list[this.settings.renderBlocks == 1 ? 0 : 1]);
+			GL11.glCallList(this.list[this.msh.config.renderSpawns == 1 ? 0 : 1]);
 			GL11.glTranslatef(-blockPos.x, -(blockPos.y + delta), -blockPos.z);
 		}
 
-		GL11.glTranslatef(this.settings.playerPosition.x, this.settings.playerPosition.y, this.settings.playerPosition.z);
+		GL11.glTranslatef(this.msh.playerPosition.x, this.msh.playerPosition.y, this.msh.playerPosition.z);
 
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 

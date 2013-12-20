@@ -5,18 +5,20 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
-import lunatrius.msh.util.Config;
+import lunatrius.msh.gui.GuiMonsterSpawnHighlighter;
+import lunatrius.msh.gui.TextureInformation;
+import lunatrius.msh.renderer.Renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.*;
@@ -26,11 +28,12 @@ import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.SpawnListEntry;
-import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -38,44 +41,50 @@ import java.util.Map.Entry;
 public class MonsterSpawnHighlighter {
 	private final Minecraft minecraft = Minecraft.getMinecraft();
 	private World world = null;
-	private final KeyBinding toggleKey = new KeyBinding("msh.toggle", Keyboard.KEY_L);
-	private final Settings settings = Settings.instance();
+	private final KeyBinding toggleKey = new KeyBinding("key.msh.toggle", Keyboard.KEY_L);
 	private final Frustrum frustrum = new Frustrum();
 	private final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
+	private Map<Integer, Map<Class, EnumCreatureType>> biomeCreatureSpawnMapping = new HashMap<Integer, Map<Class, EnumCreatureType>>();
+	public final List<Vector4f> spawnList = new ArrayList<Vector4f>();
+	public Vector3f playerPosition = new Vector3f();
 	private int ticks = -1;
+
+	public Config config = null;
+	public List<String> entityBlacklist = new ArrayList<String>();
+	public List<EntityLivingEntry> entityList = new ArrayList<EntityLivingEntry>();
+	public Map<Class<? extends EntityLiving>, TextureInformation> entityIcons = new HashMap<Class<? extends EntityLiving>, TextureInformation>();
+
+	public boolean hasSeed = false;
+	public long seed = 0;
 
 	@Instance("MonsterSpawnHighlighter")
 	public static MonsterSpawnHighlighter instance;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		Configuration config = this.settings.config = new Configuration(event.getSuggestedConfigurationFile());
+		this.config = new Config(event.getSuggestedConfigurationFile());
+		this.config.load();
+		this.config.save();
 
-		config.load();
-		this.settings.colorDayRed = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorDayRed", (int) (this.settings.colorDayRed * 255), 0, 255, "Amount of red color (during the day).") / 255.0f;
-		this.settings.colorDayGreen = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorDayGreen", (int) (this.settings.colorDayGreen * 255), 0, 255, "Amount of green color (during the day).") / 255.0f;
-		this.settings.colorDayBlue = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorDayBlue", (int) (this.settings.colorDayBlue * 255), 0, 255, "Amount of blue color (during the day).") / 255.0f;
-		this.settings.colorNightRed = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorNightRed", (int) (this.settings.colorNightRed * 255), 0, 255, "Amount of red color (during the night).") / 255.0f;
-		this.settings.colorNightGreen = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorNightGreen", (int) (this.settings.colorNightGreen * 255), 0, 255, "Amount of green color (during the night).") / 255.0f;
-		this.settings.colorNightBlue = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorNightBlue", (int) (this.settings.colorNightBlue * 255), 0, 255, "Amount of blue color (during the night).") / 255.0f;
-		this.settings.colorBothRed = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothRed", (int) (this.settings.colorBothRed * 255), 0, 255, "Amount of red color (during the night).") / 255.0f;
-		this.settings.colorBothGreen = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothGreen", (int) (this.settings.colorBothGreen * 255), 0, 255, "Amount of green color (during the night).") / 255.0f;
-		this.settings.colorBothBlue = Config.getInt(config, Configuration.CATEGORY_GENERAL, "colorBothBlue", (int) (this.settings.colorBothBlue * 255), 0, 255, "Amount of blue color (during the night).") / 255.0f;
-		this.settings.renderRangeXZ = Config.getInt(config, Configuration.CATEGORY_GENERAL, "renderRangeXZ", this.settings.renderRangeXZ, 1, 32, "Amount of blocks that should be checked in X and Z directions ([2*range+1]^2 total).");
-		this.settings.renderRangeYBellow = Config.getInt(config, Configuration.CATEGORY_GENERAL, "renderRangeYBellow", this.settings.renderRangeYBellow, 1, 32, "Amount of blocks that should be checked bellow the player.");
-		this.settings.renderRangeYAbove = Config.getInt(config, Configuration.CATEGORY_GENERAL, "renderRangeYAbove", this.settings.renderRangeYAbove, 1, 32, "Amount of blocks that should be checked above the player.");
-		this.settings.updateRate = Config.getInt(config, Configuration.CATEGORY_GENERAL, "updateRate", this.settings.updateRate, 1, 30, "Amount of ticks to wait before refreshing again.");
-		this.settings.guideLength = (float) Config.getDouble(config, Configuration.CATEGORY_GENERAL, "guideLength", this.settings.guideLength, -50.0f, 50.0f, "Length of the guide line (negative numbers invert the guide line).");
-		for (int i = 0; i < this.settings.entityLiving.length; i++) {
-			this.settings.entityLiving[i].enabled = Config.getBoolean(config, Configuration.CATEGORY_GENERAL, "enabled" + this.settings.entityLiving[i].name, this.settings.entityLiving[i].enabled, "Enable spawn rendering of " + this.settings.entityLiving[i].name + ".");
-		}
-		config.save();
+		// vanilla
+		this.entityBlacklist.add("Blaze");
+		this.entityBlacklist.add("CaveSpider");
+		this.entityBlacklist.add("EnderDragon");
+		this.entityBlacklist.add("Giant");
+		this.entityBlacklist.add("Mob");
+		this.entityBlacklist.add("Monster");
+		this.entityBlacklist.add("SnowMan");
+		this.entityBlacklist.add("Villager");
+		this.entityBlacklist.add("VillagerGolem");
+		this.entityBlacklist.add("WitherBoss");
+		this.entityBlacklist.add("Silverfish");
+		this.entityBlacklist.add("Witch");
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		try {
-			MinecraftForge.EVENT_BUS.register(new Render(this.minecraft));
+			MinecraftForge.EVENT_BUS.register(new Renderer(this.minecraft));
 
 			KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler(new KeyBinding[] { this.toggleKey }, new boolean[] {
 					false
@@ -90,22 +99,59 @@ public class MonsterSpawnHighlighter {
 	}
 
 	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		Set<String> entityNames = EntityList.stringToClassMapping.keySet();
+		for (String entityName : entityNames) {
+			if (this.entityBlacklist.contains(entityName)) {
+				continue;
+			}
+
+			Entity entity = EntityList.createEntityByName(entityName, null);
+			if (entity instanceof EntityLiving) {
+				EntityLiving entityLiving = (EntityLiving) entity;
+				boolean enabled = this.config.isEntityEnabled(entityName);
+				EntityLivingEntry entityLivingEntry = new EntityLivingEntry(entityName, entityLiving, enabled);
+				this.entityList.add(entityLivingEntry);
+
+				if (entityLivingEntry.entity instanceof EntitySlime) {
+					try {
+						Method method = ReflectionHelper.findMethod(EntitySlime.class, (EntitySlime) entityLivingEntry.entity, new String[] {
+								"func_70799_a", "a", "setSlimeSize"
+						}, new Class[] { int.class });
+						method.invoke(entityLivingEntry.entity, 1);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+
+				try {
+					TextureInformation textureInformation = new TextureInformation(entityLiving);
+					this.entityIcons.put(entityLiving.getClass(), textureInformation);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
 		try {
-			this.settings.seed = event.getServer().worldServers[0].getSeed();
+			this.hasSeed = true;
+			this.seed = event.getServer().worldServerForDimension(0).getSeed();
 		} catch (Exception e) {
-			this.settings.seed = 0;
+			this.hasSeed = false;
 		}
 	}
 
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event) {
-		this.settings.seed = 0;
+		this.hasSeed = false;
 	}
 
 	public void keyboardEvent(KeyBinding keyBinding, boolean down) {
 		if (down && this.minecraft.currentScreen == null && keyBinding == this.toggleKey) {
-			this.minecraft.displayGuiScreen(new GuiMonsterSpawnHighlighter());
+			this.minecraft.displayGuiScreen(new GuiMonsterSpawnHighlighter(null));
 		}
 	}
 
@@ -115,23 +161,23 @@ public class MonsterSpawnHighlighter {
 		}
 
 		if (--this.ticks < 0) {
-			this.ticks = this.settings.updateRate;
+			this.ticks = this.config.updateRate;
 
-			if (this.minecraft != null && this.minecraft.theWorld != null && this.settings.renderBlocks != 0) {
-				this.settings.spawnList.clear();
+			if (this.minecraft != null && this.minecraft.theWorld != null && this.config.renderSpawns != 0) {
+				this.spawnList.clear();
 
-				this.frustrum.setPosition(this.settings.playerPosition.x, this.settings.playerPosition.y, this.settings.playerPosition.z);
+				this.frustrum.setPosition(this.playerPosition.x, this.playerPosition.y, this.playerPosition.z);
 
 				this.world = this.minecraft.theWorld;
 
 				int lowX, lowY, lowZ, highX, highY, highZ, x, y, z, type;
 
-				lowX = (int) (Math.floor(this.settings.playerPosition.x) - this.settings.renderRangeXZ);
-				highX = (int) (Math.floor(this.settings.playerPosition.x) + this.settings.renderRangeXZ);
-				lowY = (int) (Math.floor(this.settings.playerPosition.y) - this.settings.renderRangeYBellow);
-				highY = (int) (Math.floor(this.settings.playerPosition.y) + this.settings.renderRangeYAbove);
-				lowZ = (int) (Math.floor(this.settings.playerPosition.z) - this.settings.renderRangeXZ);
-				highZ = (int) (Math.floor(this.settings.playerPosition.z) + this.settings.renderRangeXZ);
+				lowX = (int) (Math.floor(this.playerPosition.x) - this.config.renderRangeXZ);
+				highX = (int) (Math.floor(this.playerPosition.x) + this.config.renderRangeXZ);
+				lowY = (int) (Math.floor(this.playerPosition.y) - this.config.renderRangeYBellow);
+				highY = (int) (Math.floor(this.playerPosition.y) + this.config.renderRangeYAbove);
+				lowZ = (int) (Math.floor(this.playerPosition.z) - this.config.renderRangeXZ);
+				highZ = (int) (Math.floor(this.playerPosition.z) + this.config.renderRangeXZ);
 
 				for (y = lowY; y <= highY; y++) {
 					for (x = lowX; x <= highX; x++) {
@@ -143,11 +189,13 @@ public class MonsterSpawnHighlighter {
 							setEntityLivingLocation(x, y, z);
 
 							if ((type = getCanSpawnHere(x, y, z)) > 0) {
-								this.settings.spawnList.add(new Vector4f(x, y, z, type));
+								this.spawnList.add(new Vector4f(x, y, z, type));
 							}
 						}
 					}
 				}
+			} else {
+				this.world = null;
 			}
 		}
 
@@ -155,8 +203,8 @@ public class MonsterSpawnHighlighter {
 	}
 
 	private void setEntityLivingLocation(int x, int y, int z) {
-		for (int i = 0; i < this.settings.entityLiving.length; i++) {
-			this.settings.entityLiving[i].entity.setLocationAndAngles(x + 0.5f, y, z + 0.5f, 0.0f, 0.0f);
+		for (EntityLivingEntry entityLivingEntry : this.entityList) {
+			entityLivingEntry.entity.setLocationAndAngles(x + 0.5f, y, z + 0.5f, 0.0f, 0.0f);
 		}
 	}
 
@@ -175,7 +223,7 @@ public class MonsterSpawnHighlighter {
 		BiomeGenBase biome = this.world.getBiomeGenForCoords(x, z);
 
 		Map<Class, EnumCreatureType> entityCreatureTypeMapping = null;
-		if (!this.settings.biomeCreatureSpawnMapping.containsKey(biome.biomeID)) {
+		if (!this.biomeCreatureSpawnMapping.containsKey(biome.biomeID)) {
 			entityCreatureTypeMapping = new HashMap<Class, EnumCreatureType>();
 
 			for (EnumCreatureType creatureType : EnumCreatureType.values()) {
@@ -187,10 +235,10 @@ public class MonsterSpawnHighlighter {
 				}
 			}
 
-			this.settings.biomeCreatureSpawnMapping.put(biome.biomeID, entityCreatureTypeMapping);
+			this.biomeCreatureSpawnMapping.put(biome.biomeID, entityCreatureTypeMapping);
 		}
 
-		entityCreatureTypeMapping = this.settings.biomeCreatureSpawnMapping.get(biome.biomeID);
+		entityCreatureTypeMapping = this.biomeCreatureSpawnMapping.get(biome.biomeID);
 		if (entityCreatureTypeMapping == null) {
 			return 0x00;
 		}
@@ -204,10 +252,10 @@ public class MonsterSpawnHighlighter {
 			key = entry.getKey();
 			value = entry.getValue();
 
-			for (i = 0; i < this.settings.entityLiving.length; i++) {
-				entity = this.settings.entityLiving[i].entity;
+			for (EntityLivingEntry entityLivingEntry : this.entityList) {
+				entity = entityLivingEntry.entity;
 
-				if (this.settings.entityLiving[i].enabled && key.isInstance(entity)) {
+				if (entityLivingEntry.enabled && key.isInstance(entity)) {
 					if (!key.equals(EntityOcelot.class) && !SpawnerAnimals.canCreatureTypeSpawnAtLocation(value, this.world, x, y, z)) {
 						continue;
 					}
@@ -256,6 +304,6 @@ public class MonsterSpawnHighlighter {
 	}
 
 	private boolean isSlimeChunk(int x, int z) {
-		return (this.settings.seed != 0) && ((new Random(this.settings.seed + x * x * 4987142 + x * 5947611 + z * z * 4392871L + z * 389711 ^ 987234911)).nextInt(10) == 0);
+		return this.hasSeed && ((new Random(this.seed + x * x * 4987142 + x * 5947611 + z * z * 4392871L + z * 389711 ^ 987234911)).nextInt(10) == 0);
 	}
 }

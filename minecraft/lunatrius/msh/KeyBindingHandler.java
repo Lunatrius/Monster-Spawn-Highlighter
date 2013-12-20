@@ -22,12 +22,16 @@ public class KeyBindingHandler extends KeyBindingRegistry.KeyHandler {
 	}
 
 	@Override
-	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {
-		MonsterSpawnHighlighter.instance.keyboardEvent(kb, true);
+	public void keyDown(EnumSet<TickType> types, KeyBinding keyBinding, boolean tickEnd, boolean isRepeat) {
+		key(keyBinding, true);
 	}
 
 	@Override
-	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
-		MonsterSpawnHighlighter.instance.keyboardEvent(kb, false);
+	public void keyUp(EnumSet<TickType> types, KeyBinding keyBinding, boolean tickEnd) {
+		key(keyBinding, false);
+	}
+
+	private void key(KeyBinding keyBinding, boolean down) {
+		MonsterSpawnHighlighter.instance.keyboardEvent(keyBinding, down);
 	}
 }

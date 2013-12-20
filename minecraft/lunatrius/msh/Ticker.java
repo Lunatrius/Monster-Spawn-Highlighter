@@ -38,6 +38,6 @@ public class Ticker implements ITickHandler {
 
 	@Override
 	public String getLabel() {
-		return "StackieTicker";
+		return "MonsterSpawnHighlighterTicker";
 	}
 }
