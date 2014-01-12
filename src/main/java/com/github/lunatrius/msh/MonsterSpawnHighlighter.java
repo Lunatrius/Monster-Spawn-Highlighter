@@ -1,4 +1,4 @@
-package lunatrius.msh;
+package com.github.lunatrius.msh;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
@@ -9,9 +9,9 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
-import lunatrius.msh.gui.GuiMonsterSpawnHighlighter;
-import lunatrius.msh.gui.TextureInformation;
-import lunatrius.msh.renderer.Renderer;
+import com.github.lunatrius.msh.gui.GuiMonsterSpawnHighlighter;
+import com.github.lunatrius.msh.gui.TextureInformation;
+import com.github.lunatrius.msh.renderer.Renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustrum;

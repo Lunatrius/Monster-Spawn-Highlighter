@@ -1,7 +1,7 @@
-package lunatrius.msh.gui;
+package com.github.lunatrius.msh.gui;
 
-import lunatrius.msh.EntityLivingEntry;
-import lunatrius.msh.MonsterSpawnHighlighter;
+import com.github.lunatrius.msh.EntityLivingEntry;
+import com.github.lunatrius.msh.MonsterSpawnHighlighter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;

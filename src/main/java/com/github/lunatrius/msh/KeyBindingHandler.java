@@ -1,4 +1,4 @@
-package lunatrius.msh;
+package com.github.lunatrius.msh;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.TickType;

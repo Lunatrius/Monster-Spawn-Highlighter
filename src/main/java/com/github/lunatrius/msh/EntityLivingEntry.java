@@ -1,4 +1,4 @@
-package lunatrius.msh;
+package com.github.lunatrius.msh;
 
 import net.minecraft.entity.EntityLiving;
 

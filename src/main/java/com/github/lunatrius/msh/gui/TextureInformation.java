@@ -1,4 +1,4 @@
-package lunatrius.msh.gui;
+package com.github.lunatrius.msh.gui;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;

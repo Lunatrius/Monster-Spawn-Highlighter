@@ -1,4 +1,4 @@
-package lunatrius.msh;
+package com.github.lunatrius.msh;
 
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
@@ -27,6 +27,7 @@ public class Config extends Configuration {
 		super(file);
 	}
 
+	@Override
 	public void load() {
 		super.load();
 		String categoryColor = "color";

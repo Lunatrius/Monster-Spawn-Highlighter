@@ -1,6 +1,6 @@
-package lunatrius.msh.renderer;
+package com.github.lunatrius.msh.renderer;
 
-import lunatrius.msh.MonsterSpawnHighlighter;
+import com.github.lunatrius.msh.MonsterSpawnHighlighter;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
