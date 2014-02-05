@@ -1,13 +1,14 @@
-package com.github.lunatrius.msh.renderer;
+package com.github.lunatrius.msh.client.renderer;
 
+import com.github.lunatrius.core.util.vector.Vector4i;
 import com.github.lunatrius.msh.MonsterSpawnHighlighter;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.ForgeSubscribe;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector4f;
 
 public class Renderer {
 	private MonsterSpawnHighlighter msh = MonsterSpawnHighlighter.instance;
@@ -62,7 +63,7 @@ public class Renderer {
 		GL11.glEndList();
 	}
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onRender(RenderWorldLastEvent event) {
 		if (this.minecraft != null && this.msh.config.renderSpawns != 0) {
 			EntityPlayerSP player = this.minecraft.thePlayer;
@@ -83,6 +84,8 @@ public class Renderer {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
 
+		GL11.glDisable(GL11.GL_LIGHTING);
+
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
 
@@ -90,14 +93,13 @@ public class Renderer {
 
 		GL11.glTranslatef(-this.msh.playerPosition.x, -this.msh.playerPosition.y, -this.msh.playerPosition.z);
 
-		Vector4f blockPos;
+		Vector4i blockPos;
 		float delta;
-		int blockID;
 		Block block;
 		for (int i = 0; i < this.msh.spawnList.size(); i++) {
 			blockPos = this.msh.spawnList.get(i);
 
-			switch ((int) blockPos.w) {
+			switch (blockPos.w) {
 			case 1:
 				this.msh.config.glColorDay();
 				break;
@@ -112,12 +114,11 @@ public class Renderer {
 			}
 
 			delta = 0.0f;
-			blockID = this.minecraft.theWorld.getBlockId((int) blockPos.x, (int) blockPos.y, (int) blockPos.z);
-			block = Block.blocksList[blockID];
+			block = this.minecraft.theWorld.func_147439_a(blockPos.x, blockPos.y, blockPos.z);
 			if (block != null) {
-				if (block.blockID == Block.snow.blockID || block.blockID == Block.pressurePlatePlanks.blockID || block.blockID == Block.pressurePlateStone.blockID) {
-					block.setBlockBoundsBasedOnState(this.minecraft.theWorld, (int) blockPos.x, (int) blockPos.y, (int) blockPos.z);
-					delta = (float) block.getBlockBoundsMaxY();
+				if (block == Blocks.snow || block == Blocks.wooden_pressure_plate || block == Blocks.stone_pressure_plate || block == Blocks.light_weighted_pressure_plate || block == Blocks.heavy_weighted_pressure_plate) {
+					block.func_149719_a(this.minecraft.theWorld, blockPos.x, blockPos.y, blockPos.z);
+					delta = (float) block.func_149669_A();
 				}
 			}
 

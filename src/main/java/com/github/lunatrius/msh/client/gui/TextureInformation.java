@@ -1,7 +1,8 @@
-package com.github.lunatrius.msh.gui;
+package com.github.lunatrius.msh.client.gui;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -57,9 +58,9 @@ public class TextureInformation {
 		Class<? extends EntityLiving> clazz = entityLiving.getClass();
 		RenderLiving renderLiving = (RenderLiving) RenderManager.instance.getEntityClassRenderObject(clazz);
 
-		Method method = ReflectionHelper.findMethod(net.minecraft.client.renderer.entity.Render.class, renderLiving, new String[] {
+		Method method = ReflectionHelper.findMethod(Render.class, renderLiving, new String[] {
 				"func_110775_a", "a", "getEntityTexture"
-		}, new Class[] { Entity.class });
+		}, Entity.class);
 		this.resourceLocation = (ResourceLocation) method.invoke(renderLiving, entityLiving);
 
 		if (clazz.equals(EntityEnderman.class)) {

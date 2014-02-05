@@ -6,4 +6,5 @@ msh.gui.guide=Guide
 msh.gui.done=Done
 
 # Keys
+key.category.msh=Monster Spawn Highlighter
 key.msh.toggle=Toggle Spawn Settings

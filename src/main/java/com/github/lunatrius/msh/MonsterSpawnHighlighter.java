@@ -1,17 +1,18 @@
 package com.github.lunatrius.msh;
 
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
+import com.github.lunatrius.core.util.vector.Vector3f;
+import com.github.lunatrius.core.util.vector.Vector4i;
+import com.github.lunatrius.msh.client.Events;
+import com.github.lunatrius.msh.client.gui.TextureInformation;
+import com.github.lunatrius.msh.client.renderer.Renderer;
+import com.github.lunatrius.msh.config.Config;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import com.github.lunatrius.msh.gui.GuiMonsterSpawnHighlighter;
-import com.github.lunatrius.msh.gui.TextureInformation;
-import com.github.lunatrius.msh.renderer.Renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustrum;
@@ -22,15 +23,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.SpawnListEntry;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -40,11 +40,11 @@ import java.util.Map.Entry;
 public class MonsterSpawnHighlighter {
 	private final Minecraft minecraft = Minecraft.getMinecraft();
 	private World world = null;
-	private final KeyBinding toggleKey = new KeyBinding("key.msh.toggle", Keyboard.KEY_L);
+	public final KeyBinding toggleKey = new KeyBinding("key.msh.toggle", Keyboard.KEY_L, "key.category.msh");
 	private final Frustrum frustrum = new Frustrum();
 	private final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 	private Map<Integer, Map<Class, EnumCreatureType>> biomeCreatureSpawnMapping = new HashMap<Integer, Map<Class, EnumCreatureType>>();
-	public final List<Vector4f> spawnList = new ArrayList<Vector4f>();
+	public final List<Vector4i> spawnList = new ArrayList<Vector4i>();
 	public Vector3f playerPosition = new Vector3f();
 	private int ticks = -1;
 
@@ -62,7 +62,6 @@ public class MonsterSpawnHighlighter {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		this.config = new Config(event.getSuggestedConfigurationFile());
-		this.config.load();
 		this.config.save();
 
 		// vanilla
@@ -85,11 +84,9 @@ public class MonsterSpawnHighlighter {
 		try {
 			MinecraftForge.EVENT_BUS.register(new Renderer(this.minecraft));
 
-			KeyBindingRegistry.registerKeyBinding(new KeyBindingHandler(new KeyBinding[] { this.toggleKey }, new boolean[] {
-					false
-			}));
+			ClientRegistry.registerKeyBinding(this.toggleKey);
 
-			TickRegistry.registerTickHandler(new Ticker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
+			FMLCommonHandler.instance().bus().register(new Events());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -146,17 +143,7 @@ public class MonsterSpawnHighlighter {
 		this.hasSeed = false;
 	}
 
-	public void keyboardEvent(KeyBinding keyBinding, boolean down) {
-		if (down && this.minecraft.currentScreen == null && keyBinding == this.toggleKey) {
-			this.minecraft.displayGuiScreen(new GuiMonsterSpawnHighlighter(null));
-		}
-	}
-
-	public boolean onTick(TickType tickType, boolean start) {
-		if (start) {
-			return true;
-		}
-
+	public boolean onTick() {
 		if (--this.ticks < 0) {
 			this.ticks = this.config.updateRate;
 
@@ -186,7 +173,7 @@ public class MonsterSpawnHighlighter {
 							setEntityLivingLocation(x, y, z);
 
 							if ((type = getCanSpawnHere(x, y, z)) > 0) {
-								this.spawnList.add(new Vector4f(x, y, z, type));
+								this.spawnList.add(new Vector4i(x, y, z, type));
 							}
 						}
 					}
@@ -207,13 +194,8 @@ public class MonsterSpawnHighlighter {
 
 	@SuppressWarnings("null")
 	private int getCanSpawnHere(int x, int y, int z) {
-		int blockID = this.world.getBlockId(x, y - 1, z);
-		if (blockID == 0) {
-			return 0x00;
-		}
-
-		Block block = Block.blocksList[blockID];
-		if (block == null || block != null && block.blockMaterial.isLiquid()) {
+		Block block = this.world.func_147439_a(x, y - 1, z);
+		if (block == null || block == Blocks.air || block.func_149688_o().isLiquid()) {
 			return 0x00;
 		}
 
@@ -224,9 +206,9 @@ public class MonsterSpawnHighlighter {
 			entityCreatureTypeMapping = new HashMap<Class, EnumCreatureType>();
 
 			for (EnumCreatureType creatureType : EnumCreatureType.values()) {
-				List<SpawnListEntry> spawnableList = biome.getSpawnableList(creatureType);
+				List<BiomeGenBase.SpawnListEntry> spawnableList = biome.getSpawnableList(creatureType);
 				if (spawnableList != null) {
-					for (SpawnListEntry entry : spawnableList) {
+					for (BiomeGenBase.SpawnListEntry entry : spawnableList) {
 						entityCreatureTypeMapping.put(entry.entityClass, creatureType);
 					}
 				}
@@ -262,20 +244,20 @@ public class MonsterSpawnHighlighter {
 					}
 
 					if (!this.world.isAnyLiquid(entity.boundingBox)) {
-						if (this.world.getCollidingBlockBounds(entity.boundingBox).isEmpty()) {
+						if (this.world.func_147461_a(entity.boundingBox).isEmpty()) {
 							if (key.equals(EntitySlime.class) && (y < 40 && isSlimeChunk(x >> 4, z >> 4) || y > 50 && y < 70 && biome.biomeID == BiomeGenBase.swampland.biomeID && getBlockLightLevel(x, y, z, 16) < 8)) {
 								return 0x03;
 							}
 
-							if ((key.equals(EntityPigZombie.class) || key.equals(EntityGhast.class) || key.equals(EntityMagmaCube.class)) && this.world.difficultySetting > 0) {
+							if ((key.equals(EntityPigZombie.class) || key.equals(EntityGhast.class) || key.equals(EntityMagmaCube.class)) && this.world.difficultySetting != EnumDifficulty.PEACEFUL) {
 								return 0x03;
 							}
 
-							if (key.equals(EntityOcelot.class) && y >= 64 && (blockID == Block.grass.blockID || block.isLeaves(this.world, x, y - 1, z))) {
+							if (key.equals(EntityOcelot.class) && y >= 64 && (block == Blocks.grass || block.isLeaves(this.world, x, y - 1, z))) {
 								return 0x03;
 							}
 
-							if ((key.equals(EntityCreeper.class) || key.equals(EntityZombie.class) || key.equals(EntitySkeleton.class) || key.equals(EntitySpider.class) || key.equals(EntityEnderman.class)) && getBlockLightLevel(x, y, z, 16) < 8 && this.world.difficultySetting > 0) {
+							if ((key.equals(EntityCreeper.class) || key.equals(EntityZombie.class) || key.equals(EntitySkeleton.class) || key.equals(EntitySpider.class) || key.equals(EntityEnderman.class)) && getBlockLightLevel(x, y, z, 16) < 8 && this.world.difficultySetting != EnumDifficulty.PEACEFUL) {
 								spawnType |= 0x02;
 							}
 
@@ -284,7 +266,7 @@ public class MonsterSpawnHighlighter {
 								spawnType |= 0x02;
 							}
 
-							if ((key.equals(EntityChicken.class) || key.equals(EntityCow.class) || key.equals(EntityMooshroom.class) || key.equals(EntityPig.class) || key.equals(EntityWolf.class)) && blockID == Block.grass.blockID && getBlockLightLevel(x, y, z, 0) > 8) {
+							if ((key.equals(EntityChicken.class) || key.equals(EntityCow.class) || key.equals(EntityMooshroom.class) || key.equals(EntityPig.class) || key.equals(EntityWolf.class)) && block == Blocks.grass && getBlockLightLevel(x, y, z, 0) > 8) {
 								spawnType |= 0x01;
 							}
 						}

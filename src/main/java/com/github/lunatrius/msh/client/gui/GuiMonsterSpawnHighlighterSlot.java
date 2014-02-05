@@ -1,4 +1,4 @@
-package com.github.lunatrius.msh.gui;
+package com.github.lunatrius.msh.client.gui;
 
 import com.github.lunatrius.msh.EntityLivingEntry;
 import com.github.lunatrius.msh.MonsterSpawnHighlighter;
@@ -20,7 +20,7 @@ public class GuiMonsterSpawnHighlighterSlot extends GuiSlot {
 	private final List<EntityLivingEntry> entityList;
 
 	public GuiMonsterSpawnHighlighterSlot(Minecraft minecraft, GuiMonsterSpawnHighlighter guiMonsterSpawnHighlighter) {
-		super(minecraft, guiMonsterSpawnHighlighter.width, guiMonsterSpawnHighlighter.height, 16, guiMonsterSpawnHighlighter.height - 30, 24);
+		super(minecraft, guiMonsterSpawnHighlighter.field_146294_l, guiMonsterSpawnHighlighter.field_146295_m, 16, guiMonsterSpawnHighlighter.field_146295_m - 30, 24);
 		this.guiMonsterSpawnHighlighter = guiMonsterSpawnHighlighter;
 		this.renderEngine = minecraft.renderEngine;
 		this.fontRenderer = minecraft.fontRenderer;
@@ -28,12 +28,12 @@ public class GuiMonsterSpawnHighlighterSlot extends GuiSlot {
 	}
 
 	@Override
-	protected int getSize() {
+	protected int func_148127_b() {
 		return this.entityList.size();
 	}
 
 	@Override
-	protected void elementClicked(int index, boolean isDoubleClick) {
+	protected void func_148144_a(int index, boolean isDoubleClick, int a, int b) {
 		if (index < 0 || index >= this.entityList.size()) {
 			return;
 		}
@@ -45,13 +45,13 @@ public class GuiMonsterSpawnHighlighterSlot extends GuiSlot {
 	}
 
 	@Override
-	protected boolean isSelected(int index) {
+	protected boolean func_148131_a(int index) {
 		return !(index < 0 || index >= this.entityList.size()) && this.entityList.get(index).enabled;
 
 	}
 
 	@Override
-	protected void drawBackground() {
+	protected void func_148123_a() {
 	}
 
 	@Override
@@ -59,13 +59,13 @@ public class GuiMonsterSpawnHighlighterSlot extends GuiSlot {
 	}
 
 	@Override
-	protected void drawSlot(int index, int x, int y, int par4, Tessellator tessellator) {
+	protected void func_148126_a(int index, int x, int y, int par4, Tessellator tessellator, int a, int b) {
 		if (index < 0 || index >= this.entityList.size()) {
 			return;
 		}
 
 		drawEntity(x, y, this.entityList.get(index).entity);
-		this.guiMonsterSpawnHighlighter.drawString(this.fontRenderer, this.entityList.get(index).entity.getEntityName(), x + 24, y + 6, 0x00FFFFFF);
+		this.guiMonsterSpawnHighlighter.drawString(this.fontRenderer, this.entityList.get(index).entity.func_145748_c_().func_150254_d(), x + 24, y + 6, 0x00FFFFFF);
 	}
 
 	private void drawEntity(int x, int y, EntityLiving entityLiving) {
