@@ -21,9 +21,9 @@ public class Events {
 
 	@SubscribeEvent
 	public void keyInput(KeyInputEvent event) {
-		if (MonsterSpawnHighlighter.instance.toggleKey.func_151468_f()) {
+		if (MonsterSpawnHighlighter.instance.toggleKey.isPressed()) {
 			if (this.minecraft.currentScreen == null) {
-				this.minecraft.func_147108_a(new GuiMonsterSpawnHighlighter(null));
+				this.minecraft.displayGuiScreen(new GuiMonsterSpawnHighlighter(null));
 			}
 		}
 	}

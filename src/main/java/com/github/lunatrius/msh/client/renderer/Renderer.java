@@ -114,11 +114,11 @@ public class Renderer {
 			}
 
 			delta = 0.0f;
-			block = this.minecraft.theWorld.func_147439_a(blockPos.x, blockPos.y, blockPos.z);
+			block = this.minecraft.theWorld.getBlock(blockPos.x, blockPos.y, blockPos.z);
 			if (block != null) {
 				if (block == Blocks.snow || block == Blocks.wooden_pressure_plate || block == Blocks.stone_pressure_plate || block == Blocks.light_weighted_pressure_plate || block == Blocks.heavy_weighted_pressure_plate) {
-					block.func_149719_a(this.minecraft.theWorld, blockPos.x, blockPos.y, blockPos.z);
-					delta = (float) block.func_149669_A();
+					block.setBlockBoundsBasedOnState(this.minecraft.theWorld, blockPos.x, blockPos.y, blockPos.z);
+					delta = (float) block.getBlockBoundsMaxY();
 				}
 			}
 

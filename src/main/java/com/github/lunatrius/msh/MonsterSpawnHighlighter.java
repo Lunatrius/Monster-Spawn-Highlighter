@@ -194,8 +194,8 @@ public class MonsterSpawnHighlighter {
 
 	@SuppressWarnings("null")
 	private int getCanSpawnHere(int x, int y, int z) {
-		Block block = this.world.func_147439_a(x, y - 1, z);
-		if (block == null || block == Blocks.air || block.func_149688_o().isLiquid()) {
+		Block block = this.world.getBlock(x, y - 1, z);
+		if (block == null || block == Blocks.air || block.getMaterial().isLiquid()) {
 			return 0x00;
 		}
 
