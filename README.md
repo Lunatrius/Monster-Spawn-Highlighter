@@ -1,5 +1,5 @@
-## Welcome to MonsterSpawnHighlighter!
-[Compiling MonsterSpawnHighlighter](#compile-monsterspawnhighlighter) - for those that want the latest unreleased features
+## Welcome to Monster Spawn Highlighter!
+[Compiling Monster Spawn Highlighter](#compile-monster-spawn-highlighter) - for those that want the latest unreleased features
 
 [Contributing](#contributing) - for those that want to help out
 
@@ -10,14 +10,14 @@
 
 [Setup Git](#setup-git)
 
-[Setup MonsterSpawnHighlighter](#setup-monsterspawnhighlighter)
+[Setup Monster Spawn Highlighter](#setup-monster-spawn-highlighter)
 
-[Compile MonsterSpawnHighlighter](#compile-monsterspawnhighlighter)
+[Compile Monster Spawn Highlighter](#compile-monster-spawn-highlighter)
 
 [Updating Your Repository](#updating-your-repository)
 
 #### Setup Java
-The Java JDK is used to compile MonsterSpawnHighlighter.
+The Java JDK is used to compile Monster Spawn Highlighter.
 
 1. Download and install the Java JDK.
     * [Windows/Mac download link](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html). Scroll down, accept the `Oracle Binary Code License Agreement for Java SE`, and download it (if you have a 64-bit OS, please download the 64-bit version).
@@ -41,7 +41,7 @@ The Java JDK is used to compile MonsterSpawnHighlighter.
 ***
 You may skip this entire section and use the provided Gradle wrapper instead (use `gradlew` instead of `gradle`).
 ***
-Gradle is used to execute the various build tasks when compiling MonsterSpawnHighlighter.
+Gradle is used to execute the various build tasks when compiling Monster Spawn Highlighter.
 
 1. Download and install Gradle.
     * [Windows/Mac download link](http://www.gradle.org/downloads). You only need the binaries, but choose whatever flavor you want.
@@ -60,17 +60,17 @@ Gradle is used to execute the various build tasks when compiling MonsterSpawnHig
 3. Open up your command line and run `gradle`. If it says "Welcome to Gradle [version].", then you're good to go. If not try the steps again.
 
 #### Setup Git
-Git is used to clone MonsterSpawnHighlighter and update your local copy.
+Git is used to clone Monster Spawn Highlighter and update your local copy.
 
 1. Download and install Git [here](http://git-scm.com/download/).
 2. *Optional* Download and install a Git GUI client, such as Github for Windows/Mac, SmartGitHg, TortoiseGit, etc. A nice list is available [here](http://git-scm.com/downloads/guis).
 
-#### Setup MonsterSpawnHighlighter
+#### Setup Monster Spawn Highlighter
 This section assumes that you're using the command-line version of Git.
 
 1. Open up your command line.
-2. Navigate to a place where you want to download MonsterSpawnHighlighter's source (eg `C:\Development\Github\Minecraft\`) by executing `cd [folder location]`. This location is known as `mcdev` from now on.
-3. Execute `git clone git@github.com:Lunatrius/MonsterSpawnHighlighter.git`. This will download MonsterSpawnHighlighter's source into `mcdev`.
+2. Navigate to a place where you want to download Monster Spawn Highlighter's source (eg `C:\Development\Github\Minecraft\`) by executing `cd [folder location]`. This location is known as `mcdev` from now on.
+3. Execute `git clone git@github.com:Lunatrius/Monster-Spawn-Highlighter.git`. This will download Monster Spawn Highlighter's source into `mcdev`.
 4. Right now, you should have a directory that looks something like:
 
 ***
@@ -79,8 +79,8 @@ This section assumes that you're using the command-line version of Git.
         \-MonsterSpawnHighlighter's files (should have build.gradle)
 ***
 
-#### Compile MonsterSpawnHighlighter
-1. Execute `gradle setupDevWorkspace`. This sets up Forge and downloads the necessary libraries to build MonsterSpawnHighlighter. This might take some time, be patient.
+#### Compile Monster Spawn Highlighter
+1. Execute `gradle setupDevWorkspace`. This sets up Forge and downloads the necessary libraries to build Monster Spawn Highlighter. This might take some time, be patient.
     * You will generally only have to do this once until the Forge version in `build.properties` changes.
 2. Execute `gradle build`. If you did everything right, `BUILD SUCCESSFUL` will be displayed after it finishes. This should be relatively quick.
     * If you see `BUILD FAILED`, check the error output (it should be right around `BUILD FAILED`), fix everything (if possible), and try again.
