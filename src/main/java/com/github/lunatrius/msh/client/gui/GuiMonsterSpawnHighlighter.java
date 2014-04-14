@@ -1,8 +1,7 @@
 package com.github.lunatrius.msh.client.gui;
 
-import com.github.lunatrius.msh.EntityLivingEntry;
-import com.github.lunatrius.msh.MonsterSpawnHighlighter;
-import com.github.lunatrius.msh.config.Config;
+import com.github.lunatrius.msh.entity.SpawnCondition;
+import com.github.lunatrius.msh.lib.Reference;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -12,7 +11,6 @@ import java.util.Comparator;
 
 public class GuiMonsterSpawnHighlighter extends GuiScreen {
 	private final GuiScreen prevGuiScreen;
-	protected final Config config;
 
 	private GuiMonsterSpawnHighlighterSlot guiMonsterSpawnHighlighterSlot;
 
@@ -27,7 +25,6 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 
 	public GuiMonsterSpawnHighlighter(GuiScreen guiScreen) {
 		this.prevGuiScreen = guiScreen;
-		this.config = MonsterSpawnHighlighter.instance.config;
 	}
 
 	@Override
@@ -41,10 +38,12 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 		this.btnDone = new GuiButton(id++, this.width / 2 + 4, this.height - 26, 150, 20, this.strDone);
 		this.buttonList.add(this.btnDone);
 
-		Collections.sort(MonsterSpawnHighlighter.instance.entityList, new Comparator<EntityLivingEntry>() {
+		SpawnCondition.populateData();
+
+		Collections.sort(SpawnCondition.SPAWN_CONDITIONS, new Comparator<SpawnCondition>() {
 			@Override
-			public int compare(EntityLivingEntry entityLivingEntry1, EntityLivingEntry entityLivingEntry2) {
-				return entityLivingEntry1.entity.func_145748_c_().getFormattedText().compareTo(entityLivingEntry2.entity.func_145748_c_().getFormattedText());
+			public int compare(SpawnCondition spawnConditionA, SpawnCondition spawnConditionB) {
+				return spawnConditionA.entity.func_145748_c_().getFormattedText().compareTo(spawnConditionB.entity.func_145748_c_().getFormattedText());
 			}
 		});
 
@@ -55,7 +54,7 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 	protected void actionPerformed(GuiButton guiButton) {
 		if (guiButton.enabled) {
 			if (guiButton.id == this.btnToggle.id) {
-				this.config.renderSpawns = (this.config.renderSpawns + 1) % 3;
+				Reference.config.renderSpawns = (Reference.config.renderSpawns + 1) % 3;
 				setToggleText();
 			} else if (guiButton.id == this.btnDone.id) {
 				this.mc.displayGuiScreen(this.prevGuiScreen);
@@ -66,7 +65,7 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 	}
 
 	private void setToggleText() {
-		this.btnToggle.displayString = ((this.config.renderSpawns == 0) ? this.strDisabled : ((this.config.renderSpawns == 1) ? this.strEnabled : this.strGuide));
+		this.btnToggle.displayString = ((Reference.config.renderSpawns == 0) ? this.strDisabled : ((Reference.config.renderSpawns == 1) ? this.strEnabled : this.strGuide));
 	}
 
 	@Override
@@ -80,6 +79,6 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 
 	@Override
 	public void onGuiClosed() {
-		this.config.save();
+		Reference.config.save();
 	}
 }

@@ -1,7 +1,8 @@
 package com.github.lunatrius.msh.client.gui;
 
-import com.github.lunatrius.msh.EntityLivingEntry;
-import com.github.lunatrius.msh.MonsterSpawnHighlighter;
+import com.github.lunatrius.msh.client.ClientProxy;
+import com.github.lunatrius.msh.entity.SpawnCondition;
+import com.github.lunatrius.msh.lib.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -17,36 +18,36 @@ public class GuiMonsterSpawnHighlighterSlot extends GuiSlot {
 	private final GuiMonsterSpawnHighlighter guiMonsterSpawnHighlighter;
 	private final TextureManager renderEngine;
 	private final FontRenderer fontRenderer;
-	private final List<EntityLivingEntry> entityList;
+	private final List<SpawnCondition> spawnConditions;
 
 	public GuiMonsterSpawnHighlighterSlot(Minecraft minecraft, GuiMonsterSpawnHighlighter guiMonsterSpawnHighlighter) {
 		super(minecraft, guiMonsterSpawnHighlighter.width, guiMonsterSpawnHighlighter.height, 16, guiMonsterSpawnHighlighter.height - 30, 24);
 		this.guiMonsterSpawnHighlighter = guiMonsterSpawnHighlighter;
 		this.renderEngine = minecraft.renderEngine;
 		this.fontRenderer = minecraft.fontRenderer;
-		this.entityList = MonsterSpawnHighlighter.instance.entityList;
+		this.spawnConditions = SpawnCondition.SPAWN_CONDITIONS;
 	}
 
 	@Override
 	protected int getSize() {
-		return this.entityList.size();
+		return this.spawnConditions.size();
 	}
 
 	@Override
 	protected void elementClicked(int index, boolean isDoubleClick, int a, int b) {
-		if (index < 0 || index >= this.entityList.size()) {
+		if (index < 0 || index >= this.spawnConditions.size()) {
 			return;
 		}
 
-		EntityLivingEntry entityLivingEntry = this.entityList.get(index);
-		entityLivingEntry.enabled = !entityLivingEntry.enabled;
+		SpawnCondition spawnCondition = this.spawnConditions.get(index);
+		spawnCondition.enabled = !spawnCondition.enabled;
 
-		this.guiMonsterSpawnHighlighter.config.setEntityEnabled(entityLivingEntry.name, entityLivingEntry.enabled);
+		Reference.config.setEntityEnabled(spawnCondition.name, spawnCondition.enabled);
 	}
 
 	@Override
 	protected boolean isSelected(int index) {
-		return !(index < 0 || index >= this.entityList.size()) && this.entityList.get(index).enabled;
+		return !(index < 0 || index >= this.spawnConditions.size()) && this.spawnConditions.get(index).enabled;
 
 	}
 
@@ -60,12 +61,12 @@ public class GuiMonsterSpawnHighlighterSlot extends GuiSlot {
 
 	@Override
 	protected void drawSlot(int index, int x, int y, int par4, Tessellator tessellator, int a, int b) {
-		if (index < 0 || index >= this.entityList.size()) {
+		if (index < 0 || index >= this.spawnConditions.size()) {
 			return;
 		}
 
-		drawEntity(x, y, this.entityList.get(index).entity);
-		this.guiMonsterSpawnHighlighter.drawString(this.fontRenderer, this.entityList.get(index).entity.func_145748_c_().getFormattedText(), x + 24, y + 6, 0x00FFFFFF);
+		drawEntity(x, y, this.spawnConditions.get(index).entity);
+		this.guiMonsterSpawnHighlighter.drawString(this.fontRenderer, this.spawnConditions.get(index).entity.func_145748_c_().getFormattedText(), x + 24, y + 6, 0x00FFFFFF);
 	}
 
 	private void drawEntity(int x, int y, EntityLiving entityLiving) {
@@ -75,7 +76,7 @@ public class GuiMonsterSpawnHighlighterSlot extends GuiSlot {
 		this.renderEngine.bindTexture(Gui.statIcons);
 		drawEntitySlot(tess, x, y);
 
-		TextureInformation ti = MonsterSpawnHighlighter.instance.entityIcons.get(entityLiving.getClass());
+		TextureInformation ti = ClientProxy.ENTITY_ICONS.get(entityLiving.getClass());
 		if (ti != null) {
 			this.renderEngine.bindTexture(ti.resourceLocation);
 			drawTextureParts(tess, x, y, ti);

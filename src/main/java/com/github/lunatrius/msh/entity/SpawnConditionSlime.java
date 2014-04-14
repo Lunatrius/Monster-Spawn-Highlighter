@@ -1,6 +1,7 @@
 package com.github.lunatrius.msh.entity;
 
 import com.github.lunatrius.core.world.chunk.ChunkHelper;
+import com.github.lunatrius.msh.lib.Reference;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -20,7 +21,7 @@ public class SpawnConditionSlime extends SpawnCondition {
 				return super.canSpawnAt(world, x, y, z);
 			}
 
-			if (ChunkHelper.isSlimeChunk(987234911L, x >> 4, y >> 4) && y < 40.0D) {
+			if (Reference.hasSeed && ChunkHelper.isSlimeChunk(Reference.seed, x >> 4, y >> 4) && y < 40.0D) {
 				return super.canSpawnAt(world, x, y, z);
 			}
 		}

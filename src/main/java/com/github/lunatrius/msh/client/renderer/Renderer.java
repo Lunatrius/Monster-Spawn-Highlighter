@@ -1,7 +1,8 @@
 package com.github.lunatrius.msh.client.renderer;
 
 import com.github.lunatrius.core.util.vector.Vector4i;
-import com.github.lunatrius.msh.MonsterSpawnHighlighter;
+import com.github.lunatrius.msh.client.Events;
+import com.github.lunatrius.msh.lib.Reference;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -11,10 +12,9 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import org.lwjgl.opengl.GL11;
 
 public class Renderer {
-	private MonsterSpawnHighlighter msh = MonsterSpawnHighlighter.instance;
 	private Minecraft minecraft = null;
 	private final int[] list = new int[] {
-			-1, -1
+			-1, -1, -1, -1, -1, -1
 	};
 
 	public Renderer(Minecraft minecraft) {
@@ -23,54 +23,51 @@ public class Renderer {
 	}
 
 	private void compileList() {
-		this.list[0] = GL11.glGenLists(1);
-		GL11.glNewList(this.list[0], GL11.GL_COMPILE);
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex3f(0.1f, 0.03f, 0.1f);
-		GL11.glVertex3f(0.1f, 0.03f, 0.9f);
-		GL11.glVertex3f(0.9f, 0.03f, 0.9f);
-		GL11.glVertex3f(0.9f, 0.03f, 0.1f);
-		GL11.glEnd();
+		for (int i = 0; i < 3; i++) {
+			this.list[i * 2 + 0] = GL11.glGenLists(1);
+			GL11.glNewList(this.list[i * 2 + 0], GL11.GL_COMPILE);
+			GL11.glBegin(GL11.GL_QUADS);
+			createQuad(0.1f + i * 0.1f, 0.9f - i * 0.1f);
+			GL11.glEnd();
 
-		GL11.glBegin(GL11.GL_LINE_LOOP);
-		GL11.glVertex3f(0.1f, 0.03f, 0.1f);
-		GL11.glVertex3f(0.1f, 0.03f, 0.9f);
-		GL11.glVertex3f(0.9f, 0.03f, 0.9f);
-		GL11.glVertex3f(0.9f, 0.03f, 0.1f);
-		GL11.glEnd();
-		GL11.glEndList();
+			GL11.glBegin(GL11.GL_LINE_LOOP);
+			createQuad(0.1f + i * 0.1f, 0.9f - i * 0.1f);
+			GL11.glEnd();
+			GL11.glEndList();
 
-		this.list[1] = GL11.glGenLists(1);
-		GL11.glNewList(this.list[1], GL11.GL_COMPILE);
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex3f(0.1f, 0.03f, 0.1f);
-		GL11.glVertex3f(0.1f, 0.03f, 0.9f);
-		GL11.glVertex3f(0.9f, 0.03f, 0.9f);
-		GL11.glVertex3f(0.9f, 0.03f, 0.1f);
-		GL11.glEnd();
+			this.list[i * 2 + 1] = GL11.glGenLists(1);
+			GL11.glNewList(this.list[i * 2 + 1], GL11.GL_COMPILE);
+			GL11.glBegin(GL11.GL_QUADS);
+			createQuad(0.1f + i * 0.1f, 0.9f - i * 0.1f);
+			GL11.glEnd();
 
-		GL11.glBegin(GL11.GL_LINE_LOOP);
-		GL11.glVertex3f(0.1f, 0.03f, 0.1f);
-		GL11.glVertex3f(0.1f, 0.03f, 0.9f);
-		GL11.glVertex3f(0.9f, 0.03f, 0.9f);
-		GL11.glVertex3f(0.9f, 0.03f, 0.1f);
-		GL11.glEnd();
+			GL11.glBegin(GL11.GL_LINE_LOOP);
+			createQuad(0.1f + i * 0.1f, 0.9f - i * 0.1f);
+			GL11.glEnd();
 
-		GL11.glBegin(GL11.GL_LINES);
-		GL11.glVertex3f(0.5f, 0.0f, 0.5f);
-		GL11.glVertex3f(0.5f, this.msh.config.guideLength, 0.5f);
-		GL11.glEnd();
-		GL11.glEndList();
+			GL11.glBegin(GL11.GL_LINES);
+			GL11.glVertex3f(0.5f, 0.0f, 0.5f);
+			GL11.glVertex3f(0.5f, Reference.config.guideLength, 0.5f);
+			GL11.glEnd();
+			GL11.glEndList();
+		}
+	}
+
+	private void createQuad(float min, float max) {
+		GL11.glVertex3f(min, 0.03f, min);
+		GL11.glVertex3f(min, 0.03f, max);
+		GL11.glVertex3f(max, 0.03f, max);
+		GL11.glVertex3f(max, 0.03f, min);
 	}
 
 	@SubscribeEvent
 	public void onRender(RenderWorldLastEvent event) {
-		if (this.minecraft != null && this.msh.config.renderSpawns != 0) {
+		if (this.minecraft != null && Reference.config.renderSpawns != 0) {
 			EntityPlayerSP player = this.minecraft.thePlayer;
 			if (player != null) {
-				this.msh.playerPosition.x = (float) (player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks);
-				this.msh.playerPosition.y = (float) (player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks);
-				this.msh.playerPosition.z = (float) (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks);
+				Reference.PLAYER_POSITION.x = (float) (player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks);
+				Reference.PLAYER_POSITION.y = (float) (player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks);
+				Reference.PLAYER_POSITION.z = (float) (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks);
 
 				render();
 			}
@@ -91,25 +88,23 @@ public class Renderer {
 
 		GL11.glLineWidth(2.0f);
 
-		GL11.glTranslatef(-this.msh.playerPosition.x, -this.msh.playerPosition.y, -this.msh.playerPosition.z);
+		GL11.glTranslatef(-Reference.PLAYER_POSITION.x, -Reference.PLAYER_POSITION.y, -Reference.PLAYER_POSITION.z);
 
-		Vector4i blockPos;
 		float delta;
 		Block block;
-		for (int i = 0; i < this.msh.spawnList.size(); i++) {
-			blockPos = this.msh.spawnList.get(i);
-
-			switch (blockPos.w) {
+		for (Vector4i blockPos : Events.SPAWN_LIST) {
+			int type = blockPos.w;
+			switch (type) {
 			case 1:
-				this.msh.config.glColorDay();
+				Reference.config.glColorDay();
 				break;
 
 			case 2:
-				this.msh.config.glColorNight();
+				Reference.config.glColorNight();
 				break;
 
 			case 3:
-				this.msh.config.glColorBoth();
+				Reference.config.glColorBoth();
 				break;
 			}
 
@@ -122,12 +117,14 @@ public class Renderer {
 				}
 			}
 
+			type = 3 - type;
+
 			GL11.glTranslatef(blockPos.x, blockPos.y + delta, blockPos.z);
-			GL11.glCallList(this.list[this.msh.config.renderSpawns == 1 ? 0 : 1]);
+			GL11.glCallList(this.list[type * 2 + (Reference.config.renderSpawns == 1 ? 0 : 1)]);
 			GL11.glTranslatef(-blockPos.x, -(blockPos.y + delta), -blockPos.z);
 		}
 
-		GL11.glTranslatef(this.msh.playerPosition.x, this.msh.playerPosition.y, this.msh.playerPosition.z);
+		GL11.glTranslatef(Reference.PLAYER_POSITION.x, Reference.PLAYER_POSITION.y, Reference.PLAYER_POSITION.z);
 
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
