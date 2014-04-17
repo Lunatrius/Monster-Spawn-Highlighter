@@ -119,21 +119,21 @@ public class Events {
 			return SpawnCondition.SpawnType.NONE;
 		}
 
-		Class key;
-		EnumCreatureType value;
+		Class clazz;
+		EnumCreatureType creatureType;
 
 		SpawnCondition.SpawnType type = SpawnCondition.SpawnType.NONE;
 
 		for (Map.Entry<Class, EnumCreatureType> entry : classCreatureType.entrySet()) {
-			key = entry.getKey();
-			value = entry.getValue();
+			clazz = entry.getKey();
+			creatureType = entry.getValue();
 
-			if (!SpawnerAnimals.canCreatureTypeSpawnAtLocation(value, world, x, y, z)) {
+			if (!SpawnerAnimals.canCreatureTypeSpawnAtLocation(creatureType, world, x, y, z)) {
 				continue;
 			}
 
-			if (SpawnCondition.CLASS_SPAWN_CONDITION_MAP.containsKey(key)) {
-				SpawnCondition spawnCondition = SpawnCondition.CLASS_SPAWN_CONDITION_MAP.get(key);
+			if (SpawnCondition.CLASS_SPAWN_CONDITION_MAP.containsKey(clazz)) {
+				SpawnCondition spawnCondition = SpawnCondition.CLASS_SPAWN_CONDITION_MAP.get(clazz);
 
 				if (spawnCondition.enabled) {
 					type = type.or(spawnCondition.canSpawnAt(world, x, y, z));
