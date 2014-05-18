@@ -1,0 +1,10 @@
+# GUI
+msh.gui.title=Monster Spawn Highlighter
+msh.gui.disabled=Отключен
+msh.gui.enabled=Включён
+msh.gui.guide=Руководство
+msh.gui.done=Готово
+
+# Keys
+key.category.msh=Monster Spawn Highlighter
+key.msh.toggle=Переключить настройки появления
