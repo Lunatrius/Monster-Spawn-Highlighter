@@ -28,7 +28,7 @@ import static cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import static cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class Events {
-	public static final KeyBinding TOGGLE_KEY = new KeyBinding("key.msh.toggle", Keyboard.KEY_L, "key.category.msh");
+	public static final KeyBinding TOGGLE_KEY = new KeyBinding("key.monsterspawnhighlighter.toggle", Keyboard.KEY_L, "key.category.monsterspawnhighlighter");
 	public static final List<Vector4i> SPAWN_LIST = new ArrayList<Vector4i>();
 
 	private final Minecraft minecraft = Minecraft.getMinecraft();

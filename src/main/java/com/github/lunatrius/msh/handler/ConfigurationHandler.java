@@ -12,7 +12,7 @@ import java.io.File;
 public class ConfigurationHandler {
 	public static final String CATEGORY_COLOR = "color";
 	public static final String CATEGORY_OTHER = "other";
-	public static final String CATEGORY_ENTITIES = "Entities";
+	public static final String CATEGORY_ENTITIES = "entities";
 
 	public static final String COLOR_DAY_RED = "colorDayRed";
 	public static final String COLOR_DAY_RED_DESC = "Amount of red color (during the day).";
@@ -50,7 +50,7 @@ public class ConfigurationHandler {
 	public static final String ENABLED_ENTITY = "enabled%s";
 	public static final String ENABLED_ENTITY_DESC = "Enable spawn rendering of %s.";
 
-	public static final String LANG_PREFIX = Reference.MODID.toLowerCase();
+	public static final String LANG_PREFIX = Reference.MODID.toLowerCase() + ".config";
 
 	public static final int COLOR_MIN = 0x00;
 	public static final int COLOR_MAX = 0xFF;
@@ -175,7 +175,9 @@ public class ConfigurationHandler {
 	}
 
 	private static Property getEntityProperty(String entityName) {
-		return configuration.get(CATEGORY_ENTITIES, String.format(ENABLED_ENTITY, entityName), false, String.format(ENABLED_ENTITY_DESC, entityName));
+		Property property = configuration.get(CATEGORY_ENTITIES, String.format(ENABLED_ENTITY, entityName), false, String.format(ENABLED_ENTITY_DESC, entityName));
+		property.setLanguageKey(String.format("%s.%s", LANG_PREFIX, String.format(ENABLED_ENTITY, entityName)));
+		return property;
 	}
 
 	public static boolean isEntityEnabled(String entityName) {

@@ -17,11 +17,11 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 	private GuiButton btnToggle = null;
 	private GuiButton btnDone = null;
 
-	private final String strTitle = I18n.format("msh.gui.title");
-	private final String strDone = I18n.format("msh.gui.done");
-	private final String strDisabled = I18n.format("msh.gui.disabled");
-	private final String strEnabled = I18n.format("msh.gui.enabled");
-	private final String strGuide = I18n.format("msh.gui.guide");
+	private final String strTitle = I18n.format("monsterspawnhighlighter.gui.title");
+	private final String strDone = I18n.format("monsterspawnhighlighter.gui.done");
+	private final String strDisabled = I18n.format("monsterspawnhighlighter.gui.disabled");
+	private final String strEnabled = I18n.format("monsterspawnhighlighter.gui.enabled");
+	private final String strGuide = I18n.format("monsterspawnhighlighter.gui.guide");
 
 	public GuiMonsterSpawnHighlighter(GuiScreen guiScreen) {
 		this.prevGuiScreen = guiScreen;
