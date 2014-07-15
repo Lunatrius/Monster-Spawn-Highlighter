@@ -2,6 +2,7 @@ package com.github.lunatrius.msh.client.renderer;
 
 import com.github.lunatrius.core.util.vector.Vector4i;
 import com.github.lunatrius.msh.client.Events;
+import com.github.lunatrius.msh.handler.ConfigurationHandler;
 import com.github.lunatrius.msh.lib.Reference;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
@@ -47,7 +48,7 @@ public class Renderer {
 
 			GL11.glBegin(GL11.GL_LINES);
 			GL11.glVertex3f(0.5f, 0.0f, 0.5f);
-			GL11.glVertex3f(0.5f, Reference.config.guideLength, 0.5f);
+			GL11.glVertex3f(0.5f, ConfigurationHandler.guideLength, 0.5f);
 			GL11.glEnd();
 			GL11.glEndList();
 		}
@@ -62,7 +63,7 @@ public class Renderer {
 
 	@SubscribeEvent
 	public void onRender(RenderWorldLastEvent event) {
-		if (this.minecraft != null && Reference.config.renderSpawns != 0) {
+		if (this.minecraft != null && ConfigurationHandler.renderSpawns != 0) {
 			EntityPlayerSP player = this.minecraft.thePlayer;
 			if (player != null) {
 				Reference.PLAYER_POSITION.x = (float) (player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks);
@@ -96,15 +97,15 @@ public class Renderer {
 			int type = blockPos.w;
 			switch (type) {
 			case 1:
-				Reference.config.glColorDay();
+				ConfigurationHandler.glColorDay();
 				break;
 
 			case 2:
-				Reference.config.glColorNight();
+				ConfigurationHandler.glColorNight();
 				break;
 
 			case 3:
-				Reference.config.glColorBoth();
+				ConfigurationHandler.glColorBoth();
 				break;
 			}
 
@@ -120,7 +121,7 @@ public class Renderer {
 			type = 3 - type;
 
 			GL11.glTranslatef(blockPos.x, blockPos.y + delta, blockPos.z);
-			GL11.glCallList(this.list[type * 2 + (Reference.config.renderSpawns == 1 ? 0 : 1)]);
+			GL11.glCallList(this.list[type * 2 + (ConfigurationHandler.renderSpawns == 1 ? 0 : 1)]);
 			GL11.glTranslatef(-blockPos.x, -(blockPos.y + delta), -blockPos.z);
 		}
 

@@ -1,7 +1,7 @@
 package com.github.lunatrius.msh.client.gui;
 
 import com.github.lunatrius.msh.entity.SpawnCondition;
-import com.github.lunatrius.msh.lib.Reference;
+import com.github.lunatrius.msh.handler.ConfigurationHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -54,7 +54,7 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 	protected void actionPerformed(GuiButton guiButton) {
 		if (guiButton.enabled) {
 			if (guiButton.id == this.btnToggle.id) {
-				Reference.config.renderSpawns = (Reference.config.renderSpawns + 1) % 3;
+				ConfigurationHandler.renderSpawns = (ConfigurationHandler.renderSpawns + 1) % 3;
 				setToggleText();
 			} else if (guiButton.id == this.btnDone.id) {
 				this.mc.displayGuiScreen(this.prevGuiScreen);
@@ -65,7 +65,7 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 	}
 
 	private void setToggleText() {
-		this.btnToggle.displayString = ((Reference.config.renderSpawns == 0) ? this.strDisabled : ((Reference.config.renderSpawns == 1) ? this.strEnabled : this.strGuide));
+		this.btnToggle.displayString = ((ConfigurationHandler.renderSpawns == 0) ? this.strDisabled : ((ConfigurationHandler.renderSpawns == 1) ? this.strEnabled : this.strGuide));
 	}
 
 	@Override
@@ -79,6 +79,6 @@ public class GuiMonsterSpawnHighlighter extends GuiScreen {
 
 	@Override
 	public void onGuiClosed() {
-		Reference.config.save();
+		ConfigurationHandler.save();
 	}
 }

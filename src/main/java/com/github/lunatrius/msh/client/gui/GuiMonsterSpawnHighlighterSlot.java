@@ -1,8 +1,8 @@
 package com.github.lunatrius.msh.client.gui;
 
-import com.github.lunatrius.msh.client.ClientProxy;
 import com.github.lunatrius.msh.entity.SpawnCondition;
-import com.github.lunatrius.msh.lib.Reference;
+import com.github.lunatrius.msh.handler.ConfigurationHandler;
+import com.github.lunatrius.msh.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -42,7 +42,7 @@ public class GuiMonsterSpawnHighlighterSlot extends GuiSlot {
 		SpawnCondition spawnCondition = this.spawnConditions.get(index);
 		spawnCondition.enabled = !spawnCondition.enabled;
 
-		Reference.config.setEntityEnabled(spawnCondition.name, spawnCondition.enabled);
+		ConfigurationHandler.setEntityEnabled(spawnCondition.name, spawnCondition.enabled);
 	}
 
 	@Override

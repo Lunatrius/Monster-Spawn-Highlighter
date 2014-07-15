@@ -1,8 +1,8 @@
 package com.github.lunatrius.msh.entity;
 
 import com.github.lunatrius.msh.MonsterSpawnHighlighter;
+import com.github.lunatrius.msh.handler.ConfigurationHandler;
 import com.github.lunatrius.msh.lib.Reference;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -10,7 +10,6 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +71,7 @@ public abstract class SpawnCondition {
 			Reference.logger.info(String.format("Setting up %s...", entityName));
 			try {
 				Entity entity = EntityList.createEntityByName(entityName, null);
-				boolean enabled = Reference.config.isEntityEnabled(entityName);
+				boolean enabled = ConfigurationHandler.isEntityEnabled(entityName);
 				Constructor constructor = spawnConditionClass.getConstructor(String.class, EntityLiving.class, boolean.class);
 				SpawnCondition spawnCondition = (SpawnCondition) constructor.newInstance(entityName, entity, enabled);
 
@@ -93,14 +92,7 @@ public abstract class SpawnCondition {
 
 	private static void adjustEntity(Entity entity) {
 		if (entity instanceof EntitySlime) {
-			try {
-				Method method = ReflectionHelper.findMethod(EntitySlime.class, (EntitySlime) entity, new String[] {
-						"func_70799_a", "a", "setSlimeSize"
-				}, new Class[] { int.class });
-				method.invoke(entity, 1);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			((EntitySlime) entity).setSlimeSize(1);
 		}
 	}
 

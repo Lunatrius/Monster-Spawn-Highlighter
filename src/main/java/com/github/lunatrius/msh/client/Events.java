@@ -3,6 +3,7 @@ package com.github.lunatrius.msh.client;
 import com.github.lunatrius.core.util.vector.Vector4i;
 import com.github.lunatrius.msh.client.gui.GuiMonsterSpawnHighlighter;
 import com.github.lunatrius.msh.entity.SpawnCondition;
+import com.github.lunatrius.msh.handler.ConfigurationHandler;
 import com.github.lunatrius.msh.lib.Reference;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -57,9 +58,9 @@ public class Events {
 		this.minecraft.mcProfiler.startSection("msh");
 
 		if (--this.ticks < 0) {
-			this.ticks = Reference.config.updateRate;
+			this.ticks = ConfigurationHandler.updateRate;
 
-			if (this.minecraft.theWorld != null && Reference.config.renderSpawns != 0) {
+			if (this.minecraft.theWorld != null && ConfigurationHandler.renderSpawns != 0) {
 				SPAWN_LIST.clear();
 
 				this.frustrum.setPosition(Reference.PLAYER_POSITION.x, Reference.PLAYER_POSITION.y, Reference.PLAYER_POSITION.z);
@@ -69,12 +70,12 @@ public class Events {
 				int lowX, lowY, lowZ, highX, highY, highZ, x, y, z;
 				SpawnCondition.SpawnType type;
 
-				lowX = (int) (Math.floor(Reference.PLAYER_POSITION.x) - Reference.config.renderRangeXZ);
-				highX = (int) (Math.floor(Reference.PLAYER_POSITION.x) + Reference.config.renderRangeXZ);
-				lowY = (int) (Math.floor(Reference.PLAYER_POSITION.y) - Reference.config.renderRangeYBellow);
-				highY = (int) (Math.floor(Reference.PLAYER_POSITION.y) + Reference.config.renderRangeYAbove);
-				lowZ = (int) (Math.floor(Reference.PLAYER_POSITION.z) - Reference.config.renderRangeXZ);
-				highZ = (int) (Math.floor(Reference.PLAYER_POSITION.z) + Reference.config.renderRangeXZ);
+				lowX = (int) (Math.floor(Reference.PLAYER_POSITION.x) - ConfigurationHandler.renderRangeXZ);
+				highX = (int) (Math.floor(Reference.PLAYER_POSITION.x) + ConfigurationHandler.renderRangeXZ);
+				lowY = (int) (Math.floor(Reference.PLAYER_POSITION.y) - ConfigurationHandler.renderRangeYBellow);
+				highY = (int) (Math.floor(Reference.PLAYER_POSITION.y) + ConfigurationHandler.renderRangeYAbove);
+				lowZ = (int) (Math.floor(Reference.PLAYER_POSITION.z) - ConfigurationHandler.renderRangeXZ);
+				highZ = (int) (Math.floor(Reference.PLAYER_POSITION.z) + ConfigurationHandler.renderRangeXZ);
 
 				for (y = lowY; y <= highY; y++) {
 					for (x = lowX; x <= highX; x++) {
