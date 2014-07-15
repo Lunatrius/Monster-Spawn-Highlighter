@@ -10,6 +10,46 @@ import org.lwjgl.opengl.GL11;
 import java.io.File;
 
 public class ConfigurationHandler {
+	public static final String CATEGORY_COLOR = "color";
+	public static final String CATEGORY_OTHER = "other";
+	public static final String CATEGORY_ENTITIES = "Entities";
+
+	public static final String COLOR_DAY_RED = "colorDayRed";
+	public static final String COLOR_DAY_RED_DESC = "Amount of red color (during the day).";
+	public static final String COLOR_DAY_GREEN = "colorDayGreen";
+	public static final String COLOR_DAY_GREEN_DESC = "Amount of green color (during the day).";
+	public static final String COLOR_DAY_BLUE = "colorDayBlue";
+	public static final String COLOR_DAY_BLUE_DESC = "Amount of blue color (during the day).";
+
+	public static final String COLOR_NIGHT_RED = "colorNightRed";
+	public static final String COLOR_NIGHT_RED_DESC = "Amount of red color (during the night).";
+	public static final String COLOR_NIGHT_GREEN = "colorNightGreen";
+	public static final String COLOR_NIGHT_GREEN_DESC = "Amount of green color (during the night).";
+	public static final String COLOR_NIGHT_BLUE = "colorNightBlue";
+	public static final String COLOR_NIGHT_BLUE_DESC = "Amount of blue color (during the night).";
+
+	public static final String COLOR_BOTH_RED = "colorBothRed";
+	public static final String COLOR_BOTH_RED_DESC = "Amount of red color (during day and night).";
+	public static final String COLOR_BOTH_GREEN = "colorBothGreen";
+	public static final String COLOR_BOTH_GREEN_DESC = "Amount of green color (during day and night).";
+	public static final String COLOR_BOTH_BLUE = "colorBothBlue";
+	public static final String COLOR_BOTH_BLUE_DESC = "Amount of blue color (during day and night).";
+
+	public static final String RENDER_RANGE_XZ = "renderRangeXZ";
+	public static final String RENDER_RANGE_XZ_DESC = "Amount of blocks that should be checked in X and Z directions ([2*range+1]^2 total).";
+	public static final String RENDER_RANGE_Y_BELLOW = "renderRangeYBellow";
+	public static final String RENDER_RANGE_Y_BELLOW_DESC = "Amount of blocks that should be checked bellow the player.";
+	public static final String RENDER_RANGE_Y_ABOVE = "renderRangeYAbove";
+	public static final String RENDER_RANGE_Y_ABOVE_DESC = "Amount of blocks that should be checked above the player.";
+
+	public static final String UPDATE_RATE = "updateRate";
+	public static final String UPDATE_RATE_DESC = "Amount of ticks to wait before refreshing the layout again.";
+	public static final String GUIDE_LENGTH = "guideLength";
+	public static final String GUIDE_LENGTH_DESC = "Length of the guide line (negative numbers invert the guide line).";
+
+	public static final String ENABLED_ENTITY = "enabled%s";
+	public static final String ENABLED_ENTITY_DESC = "Enable spawn rendering of %s.";
+
 	public static final String LANG_PREFIX = Reference.MODID.toLowerCase();
 
 	public static final int COLOR_MIN = 0x00;
@@ -57,60 +97,60 @@ public class ConfigurationHandler {
 	}
 
 	private static void loadConfiguration() {
-		propColorDayRed = configuration.get("color", "colorDayRed", colorDayRed, "Amount of red color (during the day).", COLOR_MIN, COLOR_MAX);
-		propColorDayRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorDayRed"));
+		propColorDayRed = configuration.get(CATEGORY_COLOR, COLOR_DAY_RED, colorDayRed, COLOR_DAY_RED_DESC, COLOR_MIN, COLOR_MAX);
+		propColorDayRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_DAY_RED));
 		colorDayRed = propColorDayRed.getInt(colorDayRed);
 
-		propColorDayGreen = configuration.get("color", "colorDayGreen", colorDayGreen, "Amount of green color (during the day).", COLOR_MIN, COLOR_MAX);
-		propColorDayGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorDayGreen"));
+		propColorDayGreen = configuration.get(CATEGORY_COLOR, COLOR_DAY_GREEN, colorDayGreen, COLOR_DAY_GREEN_DESC, COLOR_MIN, COLOR_MAX);
+		propColorDayGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_DAY_GREEN));
 		colorDayGreen = propColorDayGreen.getInt(colorDayGreen);
 
-		propColorDayBlue = configuration.get("color", "colorDayBlue", colorDayBlue, "Amount of blue color (during the day).", COLOR_MIN, COLOR_MAX);
-		propColorDayBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorDayBlue"));
+		propColorDayBlue = configuration.get(CATEGORY_COLOR, COLOR_DAY_BLUE, colorDayBlue, COLOR_DAY_BLUE_DESC, COLOR_MIN, COLOR_MAX);
+		propColorDayBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_DAY_BLUE));
 		colorDayBlue = propColorDayBlue.getInt(colorDayBlue);
 
-		propColorNightRed = configuration.get("color", "colorNightRed", colorNightRed, "Amount of red color (during the night).", COLOR_MIN, COLOR_MAX);
-		propColorNightRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorNightRed"));
+		propColorNightRed = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_RED, colorNightRed, COLOR_NIGHT_RED_DESC, COLOR_MIN, COLOR_MAX);
+		propColorNightRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_NIGHT_RED));
 		colorNightRed = propColorNightRed.getInt(colorNightRed);
 
-		propColorNightGreen = configuration.get("color", "colorNightGreen", colorNightGreen, "Amount of green color (during the night).", COLOR_MIN, COLOR_MAX);
-		propColorNightGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorNightGreen"));
+		propColorNightGreen = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_GREEN, colorNightGreen, COLOR_NIGHT_GREEN_DESC, COLOR_MIN, COLOR_MAX);
+		propColorNightGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_NIGHT_GREEN));
 		colorNightGreen = propColorNightGreen.getInt(colorNightGreen);
 
-		propColorNightBlue = configuration.get("color", "colorNightBlue", colorNightBlue, "Amount of blue color (during the night).", COLOR_MIN, COLOR_MAX);
-		propColorNightBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorNightBlue"));
+		propColorNightBlue = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_BLUE, colorNightBlue, COLOR_NIGHT_BLUE_DESC, COLOR_MIN, COLOR_MAX);
+		propColorNightBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_NIGHT_BLUE));
 		colorNightBlue = propColorNightBlue.getInt(colorNightBlue);
 
-		propColorBothRed = configuration.get("color", "colorBothRed", colorBothRed, "Amount of red color (during day and night).", COLOR_MIN, COLOR_MAX);
-		propColorBothRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorBothRed"));
+		propColorBothRed = configuration.get(CATEGORY_COLOR, COLOR_BOTH_RED, colorBothRed, COLOR_BOTH_RED_DESC, COLOR_MIN, COLOR_MAX);
+		propColorBothRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_BOTH_RED));
 		colorBothRed = propColorBothRed.getInt(colorBothRed);
 
-		propColorBothGreen = configuration.get("color", "colorBothGreen", colorBothGreen, "Amount of green color (during day and night).", COLOR_MIN, COLOR_MAX);
-		propColorBothGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorBothGreen"));
+		propColorBothGreen = configuration.get(CATEGORY_COLOR, COLOR_BOTH_GREEN, colorBothGreen, COLOR_BOTH_GREEN_DESC, COLOR_MIN, COLOR_MAX);
+		propColorBothGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_BOTH_GREEN));
 		colorBothGreen = propColorBothGreen.getInt(colorBothGreen);
 
-		propColorBothBlue = configuration.get("color", "colorBothBlue", colorBothBlue, "Amount of blue color (during day and night).", COLOR_MIN, COLOR_MAX);
-		propColorBothBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "colorBothBlue"));
+		propColorBothBlue = configuration.get(CATEGORY_COLOR, COLOR_BOTH_BLUE, colorBothBlue, COLOR_BOTH_BLUE_DESC, COLOR_MIN, COLOR_MAX);
+		propColorBothBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_BOTH_BLUE));
 		colorBothBlue = propColorBothBlue.getInt(colorBothBlue);
 
-		propRenderRangeXZ = configuration.get("other", "renderRangeXZ", renderRangeXZ, "Amount of blocks that should be checked in X and Z directions ([2*range+1]^2 total).", 0, 30);
-		propRenderRangeXZ.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "renderRangeXZ"));
+		propRenderRangeXZ = configuration.get(CATEGORY_OTHER, RENDER_RANGE_XZ, renderRangeXZ, RENDER_RANGE_XZ_DESC, 0, 30);
+		propRenderRangeXZ.setLanguageKey(String.format("%s.%s", LANG_PREFIX, RENDER_RANGE_XZ));
 		renderRangeXZ = propRenderRangeXZ.getInt(renderRangeXZ);
 
-		propRenderRangeYBellow = configuration.get("other", "renderRangeYBellow", renderRangeYBellow, "Amount of blocks that should be checked bellow the player.", 0, 30);
-		propRenderRangeYBellow.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "renderRangeYBellow"));
+		propRenderRangeYBellow = configuration.get(CATEGORY_OTHER, RENDER_RANGE_Y_BELLOW, renderRangeYBellow, RENDER_RANGE_Y_BELLOW_DESC, 0, 30);
+		propRenderRangeYBellow.setLanguageKey(String.format("%s.%s", LANG_PREFIX, RENDER_RANGE_Y_BELLOW));
 		renderRangeYBellow = propRenderRangeYBellow.getInt(renderRangeYBellow);
 
-		propRenderRangeYAbove = configuration.get("other", "renderRangeYAbove", renderRangeYAbove, "Amount of blocks that should be checked above the player.", 0, 30);
-		propRenderRangeYAbove.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "renderRangeYAbove"));
+		propRenderRangeYAbove = configuration.get(CATEGORY_OTHER, RENDER_RANGE_Y_ABOVE, renderRangeYAbove, RENDER_RANGE_Y_ABOVE_DESC, 0, 30);
+		propRenderRangeYAbove.setLanguageKey(String.format("%s.%s", LANG_PREFIX, RENDER_RANGE_Y_ABOVE));
 		renderRangeYAbove = propRenderRangeYAbove.getInt(renderRangeYAbove);
 
-		propUpdateRate = configuration.get("other", "updateRate", updateRate, "Amount of ticks to wait before refreshing again.", 0, 30);
-		propUpdateRate.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "updateRate"));
+		propUpdateRate = configuration.get(CATEGORY_OTHER, UPDATE_RATE, updateRate, UPDATE_RATE_DESC, 0, 30);
+		propUpdateRate.setLanguageKey(String.format("%s.%s", LANG_PREFIX, UPDATE_RATE));
 		updateRate = propUpdateRate.getInt(updateRate);
 
-		propGuideLength = configuration.get("other", "guideLength", guideLength, "Length of the guide line (negative numbers invert the guide line).", -50.0, 50.0);
-		propGuideLength.setLanguageKey(String.format("%s.%s", LANG_PREFIX, "guideLength"));
+		propGuideLength = configuration.get(CATEGORY_OTHER, GUIDE_LENGTH, guideLength, GUIDE_LENGTH_DESC, -50.0, 50.0);
+		propGuideLength.setLanguageKey(String.format("%s.%s", LANG_PREFIX, GUIDE_LENGTH));
 		guideLength = (float) propGuideLength.getDouble(guideLength);
 
 		save();
@@ -135,7 +175,7 @@ public class ConfigurationHandler {
 	}
 
 	private static Property getEntityProperty(String entityName) {
-		return configuration.get("Entities", String.format("enabled%s", entityName), false, String.format("Enable spawn rendering of %s.", entityName));
+		return configuration.get(CATEGORY_ENTITIES, String.format(ENABLED_ENTITY, entityName), false, String.format(ENABLED_ENTITY_DESC, entityName));
 	}
 
 	public static boolean isEntityEnabled(String entityName) {
