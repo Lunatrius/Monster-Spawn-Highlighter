@@ -16,7 +16,7 @@ public class Reference {
 			prop.load(stream);
 			stream.close();
 		} catch (Exception e) {
-			throw Throwables.propagate(e);
+			Throwables.propagate(e);
 		}
 
 		VERSION = prop.getProperty("version.mod");
