@@ -57,21 +57,37 @@ public class ConfigurationHandler {
 
 	public static Configuration configuration;
 
-	public static int colorDayRed = COLOR_MIN;
-	public static int colorDayGreen = COLOR_MAX;
-	public static int colorDayBlue = COLOR_MIN;
-	public static int colorNightRed = COLOR_MIN;
-	public static int colorNightGreen = COLOR_MIN;
-	public static int colorNightBlue = COLOR_MAX;
-	public static int colorBothRed = COLOR_MAX;
-	public static int colorBothGreen = COLOR_MIN;
-	public static int colorBothBlue = COLOR_MIN;
-	public static int renderRangeXZ = 8;
-	public static int renderRangeYBellow = 4;
-	public static int renderRangeYAbove = 0;
-	public static int updateRate = 4;
-	public static float guideLength = 1.5f;
-	public static int renderSpawns = 0;
+	public static final int COLORDAYRED_DEFAULT = COLOR_MIN;
+	public static final int COLORDAYGREEN_DEFAULT = COLOR_MAX;
+	public static final int COLORDAYBLUE_DEFAULT = COLOR_MIN;
+	public static final int COLORNIGHTRED_DEFAULT = COLOR_MIN;
+	public static final int COLORNIGHTGREEN_DEFAULT = COLOR_MIN;
+	public static final int COLORNIGHTBLUE_DEFAULT = COLOR_MAX;
+	public static final int COLORBOTHRED_DEFAULT = COLOR_MAX;
+	public static final int COLORBOTHGREEN_DEFAULT = COLOR_MIN;
+	public static final int COLORBOTHBLUE_DEFAULT = COLOR_MIN;
+	public static final int RENDERRANGEXZ_DEFAULT = 8;
+	public static final int RENDERRANGEYBELLOW_DEFAULT = 4;
+	public static final int RENDERRANGEYABOVE_DEFAULT = 0;
+	public static final int UPDATERATE_DEFAULT = 4;
+	public static final float GUIDELENGTH_DEFAULT = 1.5f;
+	public static final int RENDERSPAWNS_DEFAULT = 0;
+
+	public static int colorDayRed = COLORDAYRED_DEFAULT;
+	public static int colorDayGreen = COLORDAYGREEN_DEFAULT;
+	public static int colorDayBlue = COLORDAYBLUE_DEFAULT;
+	public static int colorNightRed = COLORNIGHTRED_DEFAULT;
+	public static int colorNightGreen = COLORNIGHTGREEN_DEFAULT;
+	public static int colorNightBlue = COLORNIGHTBLUE_DEFAULT;
+	public static int colorBothRed = COLORBOTHRED_DEFAULT;
+	public static int colorBothGreen = COLORBOTHGREEN_DEFAULT;
+	public static int colorBothBlue = COLORBOTHBLUE_DEFAULT;
+	public static int renderRangeXZ = RENDERRANGEXZ_DEFAULT;
+	public static int renderRangeYBellow = RENDERRANGEYBELLOW_DEFAULT;
+	public static int renderRangeYAbove = RENDERRANGEYABOVE_DEFAULT;
+	public static int updateRate = UPDATERATE_DEFAULT;
+	public static float guideLength = GUIDELENGTH_DEFAULT;
+	public static int renderSpawns = RENDERSPAWNS_DEFAULT;
 
 	public static Property propColorDayRed;
 	public static Property propColorDayGreen;
@@ -97,61 +113,61 @@ public class ConfigurationHandler {
 	}
 
 	private static void loadConfiguration() {
-		propColorDayRed = configuration.get(CATEGORY_COLOR, COLOR_DAY_RED, colorDayRed, COLOR_DAY_RED_DESC, COLOR_MIN, COLOR_MAX);
+		propColorDayRed = configuration.get(CATEGORY_COLOR, COLOR_DAY_RED, COLORDAYRED_DEFAULT, COLOR_DAY_RED_DESC, COLOR_MIN, COLOR_MAX);
 		propColorDayRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_DAY_RED));
-		colorDayRed = propColorDayRed.getInt(colorDayRed);
+		colorDayRed = propColorDayRed.getInt(COLORDAYRED_DEFAULT);
 
-		propColorDayGreen = configuration.get(CATEGORY_COLOR, COLOR_DAY_GREEN, colorDayGreen, COLOR_DAY_GREEN_DESC, COLOR_MIN, COLOR_MAX);
+		propColorDayGreen = configuration.get(CATEGORY_COLOR, COLOR_DAY_GREEN, COLORDAYGREEN_DEFAULT, COLOR_DAY_GREEN_DESC, COLOR_MIN, COLOR_MAX);
 		propColorDayGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_DAY_GREEN));
-		colorDayGreen = propColorDayGreen.getInt(colorDayGreen);
+		colorDayGreen = propColorDayGreen.getInt(COLORDAYGREEN_DEFAULT);
 
-		propColorDayBlue = configuration.get(CATEGORY_COLOR, COLOR_DAY_BLUE, colorDayBlue, COLOR_DAY_BLUE_DESC, COLOR_MIN, COLOR_MAX);
+		propColorDayBlue = configuration.get(CATEGORY_COLOR, COLOR_DAY_BLUE, COLORDAYBLUE_DEFAULT, COLOR_DAY_BLUE_DESC, COLOR_MIN, COLOR_MAX);
 		propColorDayBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_DAY_BLUE));
-		colorDayBlue = propColorDayBlue.getInt(colorDayBlue);
+		colorDayBlue = propColorDayBlue.getInt(COLORDAYBLUE_DEFAULT);
 
-		propColorNightRed = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_RED, colorNightRed, COLOR_NIGHT_RED_DESC, COLOR_MIN, COLOR_MAX);
+		propColorNightRed = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_RED, COLORNIGHTRED_DEFAULT, COLOR_NIGHT_RED_DESC, COLOR_MIN, COLOR_MAX);
 		propColorNightRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_NIGHT_RED));
-		colorNightRed = propColorNightRed.getInt(colorNightRed);
+		colorNightRed = propColorNightRed.getInt(COLORNIGHTRED_DEFAULT);
 
-		propColorNightGreen = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_GREEN, colorNightGreen, COLOR_NIGHT_GREEN_DESC, COLOR_MIN, COLOR_MAX);
+		propColorNightGreen = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_GREEN, COLORNIGHTGREEN_DEFAULT, COLOR_NIGHT_GREEN_DESC, COLOR_MIN, COLOR_MAX);
 		propColorNightGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_NIGHT_GREEN));
-		colorNightGreen = propColorNightGreen.getInt(colorNightGreen);
+		colorNightGreen = propColorNightGreen.getInt(COLORNIGHTGREEN_DEFAULT);
 
-		propColorNightBlue = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_BLUE, colorNightBlue, COLOR_NIGHT_BLUE_DESC, COLOR_MIN, COLOR_MAX);
+		propColorNightBlue = configuration.get(CATEGORY_COLOR, COLOR_NIGHT_BLUE, COLORNIGHTBLUE_DEFAULT, COLOR_NIGHT_BLUE_DESC, COLOR_MIN, COLOR_MAX);
 		propColorNightBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_NIGHT_BLUE));
-		colorNightBlue = propColorNightBlue.getInt(colorNightBlue);
+		colorNightBlue = propColorNightBlue.getInt(COLORNIGHTBLUE_DEFAULT);
 
-		propColorBothRed = configuration.get(CATEGORY_COLOR, COLOR_BOTH_RED, colorBothRed, COLOR_BOTH_RED_DESC, COLOR_MIN, COLOR_MAX);
+		propColorBothRed = configuration.get(CATEGORY_COLOR, COLOR_BOTH_RED, COLORBOTHRED_DEFAULT, COLOR_BOTH_RED_DESC, COLOR_MIN, COLOR_MAX);
 		propColorBothRed.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_BOTH_RED));
-		colorBothRed = propColorBothRed.getInt(colorBothRed);
+		colorBothRed = propColorBothRed.getInt(COLORBOTHRED_DEFAULT);
 
-		propColorBothGreen = configuration.get(CATEGORY_COLOR, COLOR_BOTH_GREEN, colorBothGreen, COLOR_BOTH_GREEN_DESC, COLOR_MIN, COLOR_MAX);
+		propColorBothGreen = configuration.get(CATEGORY_COLOR, COLOR_BOTH_GREEN, COLORBOTHGREEN_DEFAULT, COLOR_BOTH_GREEN_DESC, COLOR_MIN, COLOR_MAX);
 		propColorBothGreen.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_BOTH_GREEN));
-		colorBothGreen = propColorBothGreen.getInt(colorBothGreen);
+		colorBothGreen = propColorBothGreen.getInt(COLORBOTHGREEN_DEFAULT);
 
-		propColorBothBlue = configuration.get(CATEGORY_COLOR, COLOR_BOTH_BLUE, colorBothBlue, COLOR_BOTH_BLUE_DESC, COLOR_MIN, COLOR_MAX);
+		propColorBothBlue = configuration.get(CATEGORY_COLOR, COLOR_BOTH_BLUE, COLORBOTHBLUE_DEFAULT, COLOR_BOTH_BLUE_DESC, COLOR_MIN, COLOR_MAX);
 		propColorBothBlue.setLanguageKey(String.format("%s.%s", LANG_PREFIX, COLOR_BOTH_BLUE));
-		colorBothBlue = propColorBothBlue.getInt(colorBothBlue);
+		colorBothBlue = propColorBothBlue.getInt(COLORBOTHBLUE_DEFAULT);
 
-		propRenderRangeXZ = configuration.get(CATEGORY_OTHER, RENDER_RANGE_XZ, renderRangeXZ, RENDER_RANGE_XZ_DESC, 0, 30);
+		propRenderRangeXZ = configuration.get(CATEGORY_OTHER, RENDER_RANGE_XZ, RENDERRANGEXZ_DEFAULT, RENDER_RANGE_XZ_DESC, 0, 30);
 		propRenderRangeXZ.setLanguageKey(String.format("%s.%s", LANG_PREFIX, RENDER_RANGE_XZ));
-		renderRangeXZ = propRenderRangeXZ.getInt(renderRangeXZ);
+		renderRangeXZ = propRenderRangeXZ.getInt(RENDERRANGEXZ_DEFAULT);
 
-		propRenderRangeYBellow = configuration.get(CATEGORY_OTHER, RENDER_RANGE_Y_BELLOW, renderRangeYBellow, RENDER_RANGE_Y_BELLOW_DESC, 0, 30);
+		propRenderRangeYBellow = configuration.get(CATEGORY_OTHER, RENDER_RANGE_Y_BELLOW, RENDERRANGEYBELLOW_DEFAULT, RENDER_RANGE_Y_BELLOW_DESC, 0, 30);
 		propRenderRangeYBellow.setLanguageKey(String.format("%s.%s", LANG_PREFIX, RENDER_RANGE_Y_BELLOW));
-		renderRangeYBellow = propRenderRangeYBellow.getInt(renderRangeYBellow);
+		renderRangeYBellow = propRenderRangeYBellow.getInt(RENDERRANGEYBELLOW_DEFAULT);
 
-		propRenderRangeYAbove = configuration.get(CATEGORY_OTHER, RENDER_RANGE_Y_ABOVE, renderRangeYAbove, RENDER_RANGE_Y_ABOVE_DESC, 0, 30);
+		propRenderRangeYAbove = configuration.get(CATEGORY_OTHER, RENDER_RANGE_Y_ABOVE, RENDERRANGEYABOVE_DEFAULT, RENDER_RANGE_Y_ABOVE_DESC, 0, 30);
 		propRenderRangeYAbove.setLanguageKey(String.format("%s.%s", LANG_PREFIX, RENDER_RANGE_Y_ABOVE));
-		renderRangeYAbove = propRenderRangeYAbove.getInt(renderRangeYAbove);
+		renderRangeYAbove = propRenderRangeYAbove.getInt(RENDERRANGEYABOVE_DEFAULT);
 
-		propUpdateRate = configuration.get(CATEGORY_OTHER, UPDATE_RATE, updateRate, UPDATE_RATE_DESC, 0, 30);
+		propUpdateRate = configuration.get(CATEGORY_OTHER, UPDATE_RATE, UPDATERATE_DEFAULT, UPDATE_RATE_DESC, 0, 30);
 		propUpdateRate.setLanguageKey(String.format("%s.%s", LANG_PREFIX, UPDATE_RATE));
-		updateRate = propUpdateRate.getInt(updateRate);
+		updateRate = propUpdateRate.getInt(UPDATERATE_DEFAULT);
 
-		propGuideLength = configuration.get(CATEGORY_OTHER, GUIDE_LENGTH, guideLength, GUIDE_LENGTH_DESC, -50.0, 50.0);
+		propGuideLength = configuration.get(CATEGORY_OTHER, GUIDE_LENGTH, GUIDELENGTH_DEFAULT, GUIDE_LENGTH_DESC, -50.0, 50.0);
 		propGuideLength.setLanguageKey(String.format("%s.%s", LANG_PREFIX, GUIDE_LENGTH));
-		guideLength = (float) propGuideLength.getDouble(guideLength);
+		guideLength = (float) propGuideLength.getDouble(GUIDELENGTH_DEFAULT);
 
 		save();
 	}
