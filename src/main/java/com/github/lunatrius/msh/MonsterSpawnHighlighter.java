@@ -25,12 +25,11 @@ public class MonsterSpawnHighlighter {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		VersionChecker.registerMod(event.getModMetadata(), Reference.FORGE);
-
 		Reference.logger = event.getModLog();
-
 		ConfigurationHandler.init(event.getSuggestedConfigurationFile());
 		proxy.setConfigEntryClasses();
+
+		VersionChecker.registerMod(event.getModMetadata(), Reference.FORGE);
 	}
 
 	@EventHandler
