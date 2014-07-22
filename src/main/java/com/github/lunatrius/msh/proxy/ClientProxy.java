@@ -46,6 +46,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForge.EVENT_BUS.register(new Renderer(Minecraft.getMinecraft()));
 
 		FMLCommonHandler.instance().bus().register(new Events());
+		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 	}
 
 	@Override
