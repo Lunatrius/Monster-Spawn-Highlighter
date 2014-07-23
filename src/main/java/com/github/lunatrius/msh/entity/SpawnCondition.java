@@ -2,7 +2,7 @@ package com.github.lunatrius.msh.entity;
 
 import com.github.lunatrius.msh.MonsterSpawnHighlighter;
 import com.github.lunatrius.msh.handler.ConfigurationHandler;
-import com.github.lunatrius.msh.lib.Reference;
+import com.github.lunatrius.msh.reference.Reference;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;

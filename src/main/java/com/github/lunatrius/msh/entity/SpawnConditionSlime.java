@@ -1,7 +1,7 @@
 package com.github.lunatrius.msh.entity;
 
 import com.github.lunatrius.core.world.chunk.ChunkHelper;
-import com.github.lunatrius.msh.lib.Reference;
+import com.github.lunatrius.msh.reference.Reference;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;

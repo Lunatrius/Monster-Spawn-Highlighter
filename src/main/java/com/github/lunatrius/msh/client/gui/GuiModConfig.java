@@ -1,7 +1,7 @@
 package com.github.lunatrius.msh.client.gui;
 
 import com.github.lunatrius.msh.handler.ConfigurationHandler;
-import com.github.lunatrius.msh.lib.Reference;
+import com.github.lunatrius.msh.reference.Reference;
 import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.IConfigElement;
 import net.minecraft.client.gui.GuiScreen;

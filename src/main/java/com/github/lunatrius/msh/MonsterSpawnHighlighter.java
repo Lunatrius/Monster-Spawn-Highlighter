@@ -3,8 +3,8 @@ package com.github.lunatrius.msh;
 import com.github.lunatrius.core.version.VersionChecker;
 import com.github.lunatrius.msh.entity.SpawnCondition;
 import com.github.lunatrius.msh.handler.ConfigurationHandler;
-import com.github.lunatrius.msh.lib.Reference;
 import com.github.lunatrius.msh.proxy.CommonProxy;
+import com.github.lunatrius.msh.reference.Reference;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -15,7 +15,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
-@Mod(modid = Reference.MODID, name = Reference.NAME, guiFactory = Reference.GUI_FACTORY)
+@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY)
 public class MonsterSpawnHighlighter {
 	@Instance(Reference.MODID)
 	public static MonsterSpawnHighlighter instance;

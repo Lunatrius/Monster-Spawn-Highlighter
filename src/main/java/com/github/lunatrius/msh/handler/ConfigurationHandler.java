@@ -1,6 +1,6 @@
 package com.github.lunatrius.msh.handler;
 
-import com.github.lunatrius.msh.lib.Reference;
+import com.github.lunatrius.msh.reference.Reference;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.config.Configuration;

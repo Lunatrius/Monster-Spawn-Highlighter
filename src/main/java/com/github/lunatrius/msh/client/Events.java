@@ -4,7 +4,7 @@ import com.github.lunatrius.core.util.vector.Vector4i;
 import com.github.lunatrius.msh.client.gui.GuiMonsterSpawnHighlighter;
 import com.github.lunatrius.msh.entity.SpawnCondition;
 import com.github.lunatrius.msh.handler.ConfigurationHandler;
-import com.github.lunatrius.msh.lib.Reference;
+import com.github.lunatrius.msh.reference.Reference;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.block.Block;
