@@ -1,6 +1,7 @@
 package com.github.lunatrius.msh.reference;
 
 import com.github.lunatrius.core.util.vector.Vector3f;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Reference {
@@ -15,7 +16,7 @@ public class Reference {
 
 	public static final Vector3f PLAYER_POSITION = new Vector3f();
 
-	public static Logger logger = null;
+	public static Logger logger = LogManager.getLogger(Reference.MODID);
 
 	public static boolean hasSeed = false;
 	public static long seed = 0;
