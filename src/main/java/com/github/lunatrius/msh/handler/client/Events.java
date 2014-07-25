@@ -1,4 +1,4 @@
-package com.github.lunatrius.msh.client;
+package com.github.lunatrius.msh.handler.client;
 
 import com.github.lunatrius.core.util.vector.Vector4i;
 import com.github.lunatrius.msh.client.gui.GuiMonsterSpawnHighlighter;
@@ -133,9 +133,8 @@ public class Events {
 				continue;
 			}
 
-			if (SpawnCondition.CLASS_SPAWN_CONDITION_MAP.containsKey(clazz)) {
-				SpawnCondition spawnCondition = SpawnCondition.CLASS_SPAWN_CONDITION_MAP.get(clazz);
-
+			SpawnCondition spawnCondition = SpawnCondition.CLASS_SPAWN_CONDITION_MAP.get(clazz);
+			if (spawnCondition != null) {
 				if (spawnCondition.enabled) {
 					type = type.or(spawnCondition.canSpawnAt(world, x, y, z));
 
@@ -150,21 +149,22 @@ public class Events {
 	}
 
 	private Map<Class, EnumCreatureType> getClassCreatureTypeMapFromBiome(BiomeGenBase biome) {
-		if (!this.biomeCreatureSpawnMapping.containsKey(biome.biomeID)) {
-			Map<Class, EnumCreatureType> classCreatureTypeMap = new HashMap<Class, EnumCreatureType>();
-
-			for (EnumCreatureType creatureType : EnumCreatureType.values()) {
-				List<BiomeGenBase.SpawnListEntry> spawnableList = biome.getSpawnableList(creatureType);
-				if (spawnableList != null) {
-					for (BiomeGenBase.SpawnListEntry entry : spawnableList) {
-						classCreatureTypeMap.put(entry.entityClass, creatureType);
-					}
-				}
-			}
-
-			return this.biomeCreatureSpawnMapping.put(biome.biomeID, classCreatureTypeMap);
+		Map<Class, EnumCreatureType> classCreatureTypeMap = this.biomeCreatureSpawnMapping.get(biome.biomeID);
+		if (classCreatureTypeMap != null) {
+			return classCreatureTypeMap;
 		}
 
-		return this.biomeCreatureSpawnMapping.get(biome.biomeID);
+		classCreatureTypeMap = new HashMap<Class, EnumCreatureType>();
+
+		for (EnumCreatureType creatureType : EnumCreatureType.values()) {
+			List<BiomeGenBase.SpawnListEntry> spawnableList = biome.getSpawnableList(creatureType);
+			if (spawnableList != null) {
+				for (BiomeGenBase.SpawnListEntry entry : spawnableList) {
+					classCreatureTypeMap.put(entry.entityClass, creatureType);
+				}
+			}
+		}
+
+		return this.biomeCreatureSpawnMapping.put(biome.biomeID, classCreatureTypeMap);
 	}
 }

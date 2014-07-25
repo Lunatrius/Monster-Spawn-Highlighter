@@ -1,9 +1,9 @@
 package com.github.lunatrius.msh.proxy;
 
-import com.github.lunatrius.msh.client.Events;
 import com.github.lunatrius.msh.client.gui.TextureInformation;
 import com.github.lunatrius.msh.client.renderer.Renderer;
 import com.github.lunatrius.msh.handler.ConfigurationHandler;
+import com.github.lunatrius.msh.handler.client.Events;
 import com.github.lunatrius.msh.reference.Reference;
 import cpw.mods.fml.client.config.GuiConfigEntries;
 import cpw.mods.fml.client.registry.ClientRegistry;
