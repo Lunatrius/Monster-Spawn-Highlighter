@@ -20,7 +20,7 @@ public class MonsterSpawnHighlighter {
 	@Instance(Reference.MODID)
 	public static MonsterSpawnHighlighter instance;
 
-	@SidedProxy(serverSide = Reference.PROXY_COMMON, clientSide = Reference.PROXY_CLIENT)
+	@SidedProxy(serverSide = Reference.PROXY_SERVER, clientSide = Reference.PROXY_CLIENT)
 	public static CommonProxy proxy;
 
 	@EventHandler

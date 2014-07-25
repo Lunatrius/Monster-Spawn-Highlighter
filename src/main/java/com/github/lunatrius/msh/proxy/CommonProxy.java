@@ -2,16 +2,12 @@ package com.github.lunatrius.msh.proxy;
 
 import net.minecraft.entity.EntityLiving;
 
-public class CommonProxy {
-	public void setConfigEntryClasses() {
-	}
+public abstract class CommonProxy {
+	public abstract void setConfigEntryClasses();
 
-	public void registerKeybindings() {
-	}
+	public abstract void registerKeybindings();
 
-	public void registerEvents() {
-	}
+	public abstract void registerEvents();
 
-	public void constructTextureInformation(EntityLiving entityLiving) {
-	}
+	public abstract void constructTextureInformation(EntityLiving entityLiving);
 }
