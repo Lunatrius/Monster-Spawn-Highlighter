@@ -11,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiModConfig extends GuiConfig {
-	public GuiModConfig(GuiScreen guiScreen) {
-		super(guiScreen, getConfigElements(), Reference.MODID, false, false, GuiConfig.getAbridgedConfigPath(ConfigurationHandler.configuration.toString()));
-	}
+    public GuiModConfig(GuiScreen guiScreen) {
+        super(guiScreen, getConfigElements(), Reference.MODID, false, false, GuiConfig.getAbridgedConfigPath(ConfigurationHandler.configuration.toString()));
+    }
 
-	private static List<IConfigElement> getConfigElements() {
-		List<IConfigElement> elements = new ArrayList<IConfigElement>();
-		for (String name : ConfigurationHandler.configuration.getCategoryNames()) {
-			elements.add(new ConfigElement(ConfigurationHandler.configuration.getCategory(name).setLanguageKey(String.format("%s.category.%s", ConfigurationHandler.LANG_PREFIX, name))));
-		}
-		return elements;
-	}
+    private static List<IConfigElement> getConfigElements() {
+        List<IConfigElement> elements = new ArrayList<IConfigElement>();
+        for (String name : ConfigurationHandler.configuration.getCategoryNames()) {
+            elements.add(new ConfigElement(ConfigurationHandler.configuration.getCategory(name).setLanguageKey(String.format("%s.category.%s", ConfigurationHandler.LANG_PREFIX, name))));
+        }
+        return elements;
+    }
 }

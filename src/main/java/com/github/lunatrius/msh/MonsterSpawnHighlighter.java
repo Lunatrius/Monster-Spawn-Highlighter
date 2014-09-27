@@ -17,44 +17,44 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY)
 public class MonsterSpawnHighlighter {
-	@Instance(Reference.MODID)
-	public static MonsterSpawnHighlighter instance;
+    @Instance(Reference.MODID)
+    public static MonsterSpawnHighlighter instance;
 
-	@SidedProxy(serverSide = Reference.PROXY_SERVER, clientSide = Reference.PROXY_CLIENT)
-	public static CommonProxy proxy;
+    @SidedProxy(serverSide = Reference.PROXY_SERVER, clientSide = Reference.PROXY_CLIENT)
+    public static CommonProxy proxy;
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		Reference.logger = event.getModLog();
-		ConfigurationHandler.init(event.getSuggestedConfigurationFile());
-		proxy.setConfigEntryClasses();
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        Reference.logger = event.getModLog();
+        ConfigurationHandler.init(event.getSuggestedConfigurationFile());
+        proxy.setConfigEntryClasses();
 
-		VersionChecker.registerMod(event.getModMetadata(), Reference.FORGE);
-	}
+        VersionChecker.registerMod(event.getModMetadata(), Reference.FORGE);
+    }
 
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
-		proxy.registerEvents();
-		proxy.registerKeybindings();
-	}
+    @EventHandler
+    public void init(FMLInitializationEvent event) {
+        proxy.registerEvents();
+        proxy.registerKeybindings();
+    }
 
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		SpawnCondition.populateData();
-	}
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        SpawnCondition.populateData();
+    }
 
-	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event) {
-		try {
-			Reference.hasSeed = true;
-			Reference.seed = event.getServer().worldServerForDimension(0).getSeed();
-		} catch (Exception e) {
-			Reference.hasSeed = false;
-		}
-	}
+    @EventHandler
+    public void serverStarting(FMLServerStartingEvent event) {
+        try {
+            Reference.hasSeed = true;
+            Reference.seed = event.getServer().worldServerForDimension(0).getSeed();
+        } catch (Exception e) {
+            Reference.hasSeed = false;
+        }
+    }
 
-	@EventHandler
-	public void serverStopping(FMLServerStoppingEvent event) {
-		Reference.hasSeed = false;
-	}
+    @EventHandler
+    public void serverStopping(FMLServerStoppingEvent event) {
+        Reference.hasSeed = false;
+    }
 }

@@ -5,12 +5,12 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public class SpawnConditionPigZombie extends SpawnConditionMob {
-	public SpawnConditionPigZombie(String name, EntityLiving entity, boolean enabled) {
-		super(name, entity, enabled);
-	}
+    public SpawnConditionPigZombie(String name, EntityLiving entity, boolean enabled) {
+        super(name, entity, enabled);
+    }
 
-	@Override
-	public SpawnType canSpawnAt(World world, int x, int y, int z) {
-		return world.difficultySetting != EnumDifficulty.PEACEFUL && hasNoCollisions(world) ? SpawnType.BOTH : SpawnType.NONE;
-	}
+    @Override
+    public SpawnType canSpawnAt(World world, int x, int y, int z) {
+        return world.difficultySetting != EnumDifficulty.PEACEFUL && hasNoCollisions(world) ? SpawnType.BOTH : SpawnType.NONE;
+    }
 }
