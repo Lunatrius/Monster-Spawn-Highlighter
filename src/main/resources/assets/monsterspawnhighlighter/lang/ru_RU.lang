@@ -6,96 +6,24 @@ monsterspawnhighlighter.gui.guide=Руководство
 monsterspawnhighlighter.gui.done=Готово
 
 # gui - categories
-# monsterspawnhighlighter.config.category.color=Colors
-# monsterspawnhighlighter.config.category.color.tooltip=Customize the colors of the overlays.
-# monsterspawnhighlighter.config.category.other=Other
-# monsterspawnhighlighter.config.category.other.tooltip=Customize the render range, update rate and guide length.
-# monsterspawnhighlighter.config.category.entities=Entities
-# monsterspawnhighlighter.config.category.entities.tooltip=Customize which entites to checked.
 
 # gui - config - colors
-# monsterspawnhighlighter.config.colorDayRed=Color Day Red
-# monsterspawnhighlighter.config.colorDayRed.tooltip=Amount of red color (during the day).
-# monsterspawnhighlighter.config.colorDayGreen=Color Day Green
-# monsterspawnhighlighter.config.colorDayGreen.tooltip=Amount of green color (during the day).
-# monsterspawnhighlighter.config.colorDayBlue=Color Day Blue
-# monsterspawnhighlighter.config.colorDayBlue.tooltip=Amount of blue color (during the day).
 
-# monsterspawnhighlighter.config.colorNightRed=Color Night Red
-# monsterspawnhighlighter.config.colorNightRed.tooltip=Amount of red color (during the night).
-# monsterspawnhighlighter.config.colorNightGreen=Color Night Green
-# monsterspawnhighlighter.config.colorNightGreen.tooltip=Amount of green color (during the night).
-# monsterspawnhighlighter.config.colorNightBlue=Color Night Blue
-# monsterspawnhighlighter.config.colorNightBlue.tooltip=Amount of blue color (during the night).
 
-# monsterspawnhighlighter.config.colorBothRed=Color Both Red
-# monsterspawnhighlighter.config.colorBothRed.tooltip=Amount of red color (during day and night).
-# monsterspawnhighlighter.config.colorBothGreen=Color Both Green
-# monsterspawnhighlighter.config.colorBothGreen.tooltip=Amount of green color (during day and night).
-# monsterspawnhighlighter.config.colorBothBlue=Color Both Blue
-# monsterspawnhighlighter.config.colorBothBlue.tooltip=Amount of blue color (during day and night).
 
 # gui - config - render range
-# monsterspawnhighlighter.config.renderRangeXZ=Render Range Around
-# monsterspawnhighlighter.config.renderRangeXZ.tooltip=Amount of blocks that should be checked in X and Z directions ([2*range+1]^2 total).
-# monsterspawnhighlighter.config.renderRangeYBellow=Render Range Bellow
-# monsterspawnhighlighter.config.renderRangeYBellow.tooltip=Amount of blocks that should be checked bellow the player.
-# monsterspawnhighlighter.config.renderRangeYAbove=Render Range Above
-# monsterspawnhighlighter.config.renderRangeYAbove.tooltip=Amount of blocks that should be checked above the player.
 
 # gui - config - misc
-# monsterspawnhighlighter.config.updateRate=Update Rate (ticks)
-# monsterspawnhighlighter.config.updateRate.tooltip=Amount of ticks to wait before refreshing the layout again.
-# monsterspawnhighlighter.config.guideLength=Guide Length
-# monsterspawnhighlighter.config.guideLength.tooltip=Length of the guide line (negative numbers invert the guide line).
 
 # gui - config - monsters - vanilla - animals
-# monsterspawnhighlighter.config.enabledChicken=Chicken
-# monsterspawnhighlighter.config.enabledChicken.tooltip=Enable spawn rendering of chickens.
-# monsterspawnhighlighter.config.enabledCow=Cow
-# monsterspawnhighlighter.config.enabledCow.tooltip=Enable spawn rendering of cows.
-# monsterspawnhighlighter.config.enabledMushroomCow=Mooshroom
-# monsterspawnhighlighter.config.enabledMushroomCow.tooltip=Enable spawn rendering of mooshrooms.
-# monsterspawnhighlighter.config.enabledOzelot=Ocelot
-# monsterspawnhighlighter.config.enabledOzelot.tooltip=Enable spawn rendering of ozelots.
-# monsterspawnhighlighter.config.enabledPig=Pig
-# monsterspawnhighlighter.config.enabledPig.tooltip=Enable spawn rendering of pigs.
-# monsterspawnhighlighter.config.enabledSheep=Sheep
-# monsterspawnhighlighter.config.enabledSheep.tooltip=Enable spawn rendering of sheep.
-# monsterspawnhighlighter.config.enabledWolf=Wolf
-# monsterspawnhighlighter.config.enabledWolf.tooltip=Enable spawn rendering of wolves.
 
 # gui - config - monsters - vanilla - ambient
-# monsterspawnhighlighter.config.enabledBat=Bat
-# monsterspawnhighlighter.config.enabledBat.tooltip=Enable spawn rendering of bats.
 
 # gui - config - monsters - vanilla - water
-# monsterspawnhighlighter.config.enabledSquid=Squid
-# monsterspawnhighlighter.config.enabledSquid.tooltip=Enable spawn rendering of squids.
 
 # gui - config - monsters - vanilla - monsters
-# monsterspawnhighlighter.config.enabledCreeper=Creeper
-# monsterspawnhighlighter.config.enabledCreeper.tooltip=Enable spawn rendering of creepers.
-# monsterspawnhighlighter.config.enabledEnderman=Enderman
-# monsterspawnhighlighter.config.enabledEnderman.tooltip=Enable spawn rendering of endermen.
-# monsterspawnhighlighter.config.enabledSkeleton=Skeleton
-# monsterspawnhighlighter.config.enabledSkeleton.tooltip=Enable spawn rendering of skeletons.
-# monsterspawnhighlighter.config.enabledSlime=Slime
-# monsterspawnhighlighter.config.enabledSlime.tooltip=Enable spawn rendering of slimes.
-# monsterspawnhighlighter.config.enabledSpider=Spider
-# monsterspawnhighlighter.config.enabledSpider.tooltip=Enable spawn rendering of spiders.
-# monsterspawnhighlighter.config.enabledWitch=Witch
-# monsterspawnhighlighter.config.enabledWitch.tooltip=Enable spawn rendering of witches.
-# monsterspawnhighlighter.config.enabledZombie=Zombie
-# monsterspawnhighlighter.config.enabledZombie.tooltip=Enable spawn rendering of zombies.
 
 # gui - config - monsters - vanilla - nether monsters
-# monsterspawnhighlighter.config.enabledGhast=Ghast
-# monsterspawnhighlighter.config.enabledGhast.tooltip=Enable spawn rendering of ghast.
-# monsterspawnhighlighter.config.enabledLavaSlime=Magma Cube
-# monsterspawnhighlighter.config.enabledLavaSlime.tooltip=Enable spawn rendering of magma cubes.
-# monsterspawnhighlighter.config.enabledPigZombie=Zombie Pigman
-# monsterspawnhighlighter.config.enabledPigZombie.tooltip=Enable spawn rendering of zombie pigmen.
 
 # keys
 key.category.monsterspawnhighlighter=Monster Spawn Highlighter
